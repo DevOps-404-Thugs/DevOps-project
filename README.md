@@ -90,11 +90,18 @@ Our project is defined and designed using the core principles and tools of DevOp
 ### 5. Implementation Plan
 
 **09/15/2020 – 09/18/2020**  Set up Slack channel, GitHub repository and Kanban board
+
 **09/18/2020 – 09/22/2020**  Formulate project proposal
+
 **09/23/2020 – 09/29/2020**  Set up primary Devops tools (including Flask-RestX API)
+
 **09/30/2020 – 10/06/2020**  Implement local makefile for automation processes
+
 **10/07/2020 – 10/20/2020**  Come up with test cases and implement unit testing
+
 **10/21/2020 – 11/03/2020**  Set up project CI/CD pipelining
+
 **11/04/2020 – 11/17/2020**  Create Docker image, deploy project to cloud service and monitoring 
+
 **11/18/2020 – 12/06/2020**  Fine-tuning
 
