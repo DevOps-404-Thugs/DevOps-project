@@ -1,9 +1,13 @@
 # iHomie API Server Web App
 
 **Team Members:**
+
 Boning Zhang (bz1189)
+
 Mingjun Tang (mt4145)
+
 Yi Guo (yg2173)
+
 Wanrong Zhu (wz1576)
 
 <br/>
@@ -54,7 +58,7 @@ Our project is defined and designed using the core principles and tools of DevOp
 
 ### 3. Endpoints
 
-**GET: **
+**GET:**
 
 - home page (user login page)
 - retrieve all housing information
