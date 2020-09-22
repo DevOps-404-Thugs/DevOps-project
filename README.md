@@ -1,22 +1,16 @@
-#iHomie API Server Web App
+# iHomie API Server Web App
 
-
-##Project Proposal
-
-
-
-Team Members:
+**Team Members:**
 Boning Zhang (bz1189)
 Mingjun Tang (mt4145)
 Yi Guo (yg2173)
 Wanrong Zhu (wz1576)
 
- 
+<br/>
 
- 
+## Project Proposal
 
-
-###Contents
+### Contents
 
 1.	Overview
 2.	Technology Stack	
@@ -24,14 +18,16 @@ Wanrong Zhu (wz1576)
 4.	Deliverables	
 5.	Implementation Plan	
 
+<br/>
 
+### 1. Overview
 
-
-
-###1. Overview
 Our project is defined and designed using the core principles and tools of DevOps (Development Operations). Our web application iHomie is targeted against people who need to find housing information. Our web application should provide users with different interfaces to find all the housing information. Particularly, users are able to look for housing information (in New York City for the time being) based on user-defined criteria and retrieve detailed information. Users can also update and delete housing information. Housing information entails housing names, addresses, descriptions, prices, housing unit type, facilities, and so forth.
 
-###2. Technology Stack
+<br/>
+
+### 2. Technology Stack
+
 **Front end:**
 
 - React
@@ -54,7 +50,10 @@ Our project is defined and designed using the core principles and tools of DevOp
 - Travis CI
 - Docker
 
-###3. Endpoints
+<br/>
+
+### 3. Endpoints
+
 **GET: **
 
 - home page (user login page)
@@ -76,7 +75,9 @@ Our project is defined and designed using the core principles and tools of DevOp
 
 - delete housing information
 
-###4. Deliverables
+<br/>
+
+### 4. Deliverables
 
 - elementary API server
 - project execution automation - Makefile
@@ -84,7 +85,10 @@ Our project is defined and designed using the core principles and tools of DevOp
 - project pipelining processes
 - docker container
 
-###5. Implementation Plan
+<br/>
+
+### 5. Implementation Plan
+
 **09/15/2020 – 09/18/2020**  Set up Slack channel, GitHub repository and Kanban board
 **09/18/2020 – 09/22/2020**  Formulate project proposal
 **09/23/2020 – 09/29/2020**  Set up primary Devops tools (including Flask-RestX API)
