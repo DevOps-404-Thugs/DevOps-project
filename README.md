@@ -1,5 +1,7 @@
 # iHomie API Server Web App
 
+To build production, use 'make prod'
+To create the env for a new developer, use 'make dev_env'
 **Team Members:**
 
 Boning Zhang (bz1189)
