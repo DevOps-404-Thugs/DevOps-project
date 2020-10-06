@@ -5,7 +5,8 @@ The endpoint called `endpoints` will return all available endpoints
 
 from flask import Flask
 from flask_restx import Resource, Api
-from db import get_all_housing, get_housing_info, get_housing_info_link
+from source.db import get_all_housing, get_housing_info, get_housing_info_link, get_user_info, login, add_housing_info, \
+    update_housing_address, delete_housing_info
 
 app = Flask(__name__)
 api = Api(app)
@@ -63,6 +64,51 @@ class HousingItem(Resource):
         Returns weblink of a housing.
         """
         return get_housing_info_link(id)
+
+@api.route('/login/<string:username>+<string:password>')
+@api.response(404, 'User not found.')
+class Login(Resource):
+    """
+    This class supports fetching a list of all housings
+    """
+    def get(self, username, password):
+        """
+        this method used for login
+        """
+        return get_user_info(username) if login(username, password) else None
+
+@api.route('/add/<string:address>+<string:link>')
+class AddHouseInfo(Resource):
+    """
+    This class supports fetching a list of all housings
+    """
+    def post(self, address, link):
+        """
+        this method adds housing information
+        """
+        add_housing_info(address, link)
+
+@api.route('/update/<int:id>+<string:address>')
+class UpdateHouseInfo(Resource):
+    """
+    This class supports fetching a list of all housings
+    """
+    def post(self, id, address):
+        """
+        this method updates housing address
+        """
+        update_housing_address(id, address)
+
+@api.route('/delete/<int:id>')
+class DeleteHouseInfo(Resource):
+    """
+    This class supports fetching a list of all housings
+    """
+    def delete(self, id):
+        """
+        this method deletes housing link
+        """
+        delete_housing_info(id)
 
 
 if __name__ == '__main__':
