@@ -5,7 +5,7 @@ The endpoint called `endpoints` will return all available endpoints
 
 from flask import Flask
 from flask_restx import Resource, Api
-from source.db import get_all_housing, get_housing_info, get_housing_info_link, get_user_info, login, add_housing_info,\
+from db import get_all_housing, get_housing_info, get_housing_info_link, get_user_info, login, add_housing_info,\
     delete_housing_info, update_housing_info, signup
 
 app = Flask(__name__)
