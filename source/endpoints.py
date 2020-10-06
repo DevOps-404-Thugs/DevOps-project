@@ -5,7 +5,7 @@ The endpoint called `endpoints` will return all available endpoints
 
 from flask import Flask
 from flask_restx import Resource, Api
-from db import fetch_housing
+from db import get_all_housing, get_housing_info, get_housing_info_link
 
 app = Flask(__name__)
 api = Api(app)
@@ -43,7 +43,26 @@ class Housings(Resource):
         """
         this method returns all housings
         """
-        return fetch_housing()
+        return get_all_housing()
+
+
+@api.route('/housings/<int:id>')
+@api.response(404, 'Housing not found.')
+class HousingItem(Resource):
+    """
+    This class serves to get, put, and delete housing item
+    """
+    def get(self, id):
+        """
+        Returns details of a housing.
+        """
+        return get_housing_info(id)
+
+    def get_weblink(self, id):
+        """
+        Returns weblink of a housing.
+        """
+        return get_housing_info_link(id)
 
 
 if __name__ == '__main__':
