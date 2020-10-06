@@ -20,4 +20,7 @@ lint: FORCE
 	$(LINTER) $(SRC_DIR)/*.py
 
 dev_env: FORCE
-	pip install -r $(REQ_DIR)/requirements-dev.txt
+	conda install -r $(REQ_DIR)/requirements-dev.txt
+
+docs: FORCE
+	cd source; make docs
