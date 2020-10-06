@@ -6,7 +6,7 @@ The endpoint called `endpoints` will return all available endpoints
 from flask import Flask
 from flask_restx import Resource, Api
 from source.db import get_all_housing, get_housing_info, get_housing_info_link, get_user_info, login, add_housing_info,\
-    delete_housing_info, update_housing_info
+    delete_housing_info, update_housing_info, signup
 
 app = Flask(__name__)
 api = Api(app)
@@ -77,6 +77,17 @@ class Login(Resource):
         """
         return get_user_info(username) if login(username, password) else None
 
+@api.route('/signup/<string:username>+<string:password>')
+class Signup(Resource):
+    """
+    This class supports fetching a list of all housings
+    """
+    def get(self, username, password):
+        """
+        this method used for login
+        """
+        signup(username, password)
+
 @api.route('/add/<string:address>+<string:link>')
 class AddHouseInfo(Resource):
     """
@@ -109,7 +120,6 @@ class DeleteHouseInfo(Resource):
         this method deletes housing link
         """
         delete_housing_info(id)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

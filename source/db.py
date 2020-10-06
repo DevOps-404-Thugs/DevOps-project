@@ -66,3 +66,9 @@ def login(username, password):
     """
     token = ''.join([value for key, value in all_users.items() if key == username])
     return True if password == token else False
+
+def signup(username, password):
+    """
+    A function to signup
+    """
+    all_users[username] = password
