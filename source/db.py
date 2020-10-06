@@ -46,19 +46,19 @@ def update_housing_info(id, address):
     """
     a function to update a housing address
     """
-    all_housings.get(id)[0] = address
+    if all_housings.get(id) is not None: all_housings.get(id)[0] = address
 
 def delete_housing_info(id):
     """
     a function to delete a housing
     """
-    del(all_housings[id])
+    if all_housings.get(id) is not None: del(all_housings[id])
 
 def get_user_info(username):
     """
     A function to return a detailed user with specified ID
     """
-    return None if all_users.get(username) is None else all_users.get(username)
+    return None if all_users.get(username) is None else username
 
 def login(username, password):
     """

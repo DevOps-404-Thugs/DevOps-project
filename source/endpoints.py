@@ -5,8 +5,8 @@ The endpoint called `endpoints` will return all available endpoints
 
 from flask import Flask
 from flask_restx import Resource, Api
-from db import get_all_housing, get_housing_info, get_housing_info_link, get_user_info, login, add_housing_info,\
-    delete_housing_info
+from source.db import get_all_housing, get_housing_info, get_housing_info_link, get_user_info, login, add_housing_info,\
+    delete_housing_info, update_housing_info
 
 app = Flask(__name__)
 api = Api(app)
@@ -82,7 +82,7 @@ class AddHouseInfo(Resource):
     """
     This class supports fetching a list of all housings
     """
-    def post(self, address, link):
+    def get(self, address, link):
         """
         this method adds housing information
         """
@@ -93,18 +93,18 @@ class UpdateHouseInfo(Resource):
     """
     This class supports fetching a list of all housings
     """
-    def post(self, id, address):
+    def get(self, id, address):
         """
         this method updates housing address
         """
-        update_housing_address(id, address)
+        update_housing_info(id, address)
 
 @api.route('/delete/<int:id>')
 class DeleteHouseInfo(Resource):
     """
     This class supports fetching a list of all housings
     """
-    def delete(self, id):
+    def get(self, id):
         """
         this method deletes housing link
         """
