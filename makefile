@@ -7,10 +7,6 @@ FORCE:
 
 prod: tests github
 
-github: FORCE
-	- git commit -a
-	git push origin Tommy
-
 tests: lint unit
 
 unit: FORCE
@@ -20,7 +16,7 @@ lint: FORCE
 	$(LINTER) $(SRC_DIR)/*.py
 
 dev_env: FORCE
-	conda install -r $(REQ_DIR)/requirements-dev.txt
+	pip3 install -r $(REQ_DIR)/requirements-dev.txt
 
 docs: FORCE
 	cd source; make docs
