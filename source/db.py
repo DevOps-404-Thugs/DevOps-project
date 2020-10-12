@@ -39,8 +39,8 @@ def add_housing_info(address, link):
     """
     a function to add a housing
     """
-    id = len(all_housings)
-    all_housings[id + 1] =  [address, link]
+    id = max(all_housings.keys()) + 1
+    all_housings[id] =  [address, link]
 
 def update_housing_info(id, address):
     """
