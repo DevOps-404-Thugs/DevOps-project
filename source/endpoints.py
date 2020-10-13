@@ -4,13 +4,15 @@ The endpoint called `endpoints` will return all available endpoints
 """
 
 from flask import Flask
-from flask_restx import Resource, Api
-from db import get_all_housing, get_housing_info, get_housing_info_link, get_user_info, login, add_housing_info,\
+from flask_restx import Resource, Api, reqparse
+from source.db import get_all_housing, get_housing_info, get_housing_info_link, get_user_info, login, add_housing_info,\
     delete_housing_info, update_housing_info, signup
 
 app = Flask(__name__)
 api = Api(app)
-
+parser = reqparse.RequestParser()
+parser.add_argument('username')
+parser.add_argument('password')
 
 @api.route('/hello')
 class HelloWorld(Resource):
@@ -65,61 +67,69 @@ class HousingItem(Resource):
         """
         return get_housing_info_link(id)
 
-@api.route('/login/<string:username>+<string:password>')
+@api.route('/login')
 @api.response(404, 'User not found.')
 class Login(Resource):
     """
     This class supports fetching a list of all housings
     """
-    def get(self, username, password):
+    def get(self):
         """
         this method used for login
         """
+        args = parser.parse_args()
+        username = args['username']
+        password = args['password']
         return get_user_info(username) if login(username, password) else None
 
-@api.route('/signup/<string:username>+<string:password>')
+@api.route('/signup')
 class Signup(Resource):
     """
     This class supports fetching a list of all housings
     """
-    def get(self, username, password):
+    def put(self):
         """
-        this method used for login
+        this method adds new user information
         """
-        signup(username, password)
+        args = parser.parse_args()
+        signup(args['username'], args['password'])
+        return ''
 
 @api.route('/add/<string:address>+<string:link>')
 class AddHouseInfo(Resource):
     """
     This class supports fetching a list of all housings
     """
-    def get(self, address, link):
+    def post(self, address, link):
         """
         this method adds housing information
         """
         add_housing_info(address, link)
+        return ''
 
 @api.route('/update/<int:id>+<string:address>')
 class UpdateHouseInfo(Resource):
     """
     This class supports fetching a list of all housings
     """
-    def get(self, id, address):
+    def post(self, id, address):
         """
         this method updates housing address
         """
         update_housing_info(id, address)
+        return ''
 
 @api.route('/delete/<int:id>')
 class DeleteHouseInfo(Resource):
     """
     This class supports fetching a list of all housings
     """
-    def get(self, id):
+    def delete(self, id):
         """
         this method deletes housing link
         """
         delete_housing_info(id)
+        return ''
 
 if __name__ == '__main__':
     app.run(debug=True)
