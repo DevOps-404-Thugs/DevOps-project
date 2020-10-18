@@ -59,5 +59,31 @@ class HousingInfoTest(unittest.TestCase):
     def test_housing_link(self):
         pass
 
+class LoginTest(unittest.TestCase):
+    def setUp(self):
+        self.app = app
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+    def test_login(self):
+        response = self.client.get("/login", data={'username' : 'thommy', 'password' : '123'})
+        resp_json = response.data
+        resp = json.loads(resp_json)
+        self.assertEqual(resp, "thommy")
+
+class SignupTest(unittest.TestCase):
+    def setUp(self):
+        self.app = app
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+    def test_signup(self):
+        response = self.client.put("/signup", data={'username' : 'thommy', 'password' : '123'})
+        resp_json = response.data
+        resp = json.loads(resp_json)
+        self.assertEqual(resp, "success")
+
+
+
 if __name__ == '__main__':
     unittest.main()

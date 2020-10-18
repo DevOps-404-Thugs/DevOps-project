@@ -93,7 +93,7 @@ class Signup(Resource):
         """
         args = parser.parse_args()
         signup(args['username'], args['password'])
-        return ''
+        return 'success'
 
 @api.route('/add/<string:address>+<string:link>')
 class AddHouseInfo(Resource):
@@ -105,7 +105,7 @@ class AddHouseInfo(Resource):
         this method adds housing information
         """
         add_housing_info(address, link)
-        return ''
+        return 'success'
 
 @api.route('/update/<int:id>+<string:address>')
 class UpdateHouseInfo(Resource):
@@ -117,7 +117,7 @@ class UpdateHouseInfo(Resource):
         this method updates housing address
         """
         update_housing_info(id, address)
-        return ''
+        return 'success'
 
 @api.route('/delete/<int:id>')
 class DeleteHouseInfo(Resource):
@@ -129,7 +129,7 @@ class DeleteHouseInfo(Resource):
         this method deletes housing link
         """
         delete_housing_info(id)
-        return ''
+        return 'success'
 
 if __name__ == '__main__':
     app.run(debug=True)
