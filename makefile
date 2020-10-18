@@ -7,10 +7,6 @@ FORCE:
 
 prod: tests github
 
-github: FORCE
-	- git commit -a
-	git push origin Tommy
-
 tests: lint unit
 
 unit: FORCE

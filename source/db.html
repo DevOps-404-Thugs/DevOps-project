@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>db</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/tommy/Desktop/Tandon/2020%20Fall/9223%20DevOps/DevOps-project/source/db.py">/Users/tommy/Desktop/Tandon/2020 Fall/9223 DevOps/DevOps-project/source/db.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/yi/Documents/Devops/DevOps-project/source/db.py">/Users/yi/Documents/Devops/DevOps-project/source/db.py</a></font></td></tr></table>
     <p><tt>This&nbsp;file&nbsp;will&nbsp;manage&nbsp;interactino&nbsp;with&nbsp;our&nbsp;data&nbsp;store.<br>
 At&nbsp;first,&nbsp;it&nbsp;will&nbsp;just&nbsp;contain&nbsp;stubs&nbsp;that&nbsp;return&nbsp;dummy&nbsp;data.<br>
 Gradually,&nbsp;we&nbsp;will&nbsp;fill&nbsp;in&nbsp;actual&nbsp;calls&nbsp;to&nbsp;our&nbsp;datastore.</tt></p>
@@ -19,6 +19,22 @@ Gradually,&nbsp;we&nbsp;will&nbsp;fill&nbsp;in&nbsp;actual&nbsp;calls&nbsp;to&nb
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-fetch_housing"><strong>fetch_housing</strong></a>()</dt><dd><tt>A&nbsp;function&nbsp;to&nbsp;return&nbsp;all&nbsp;housings&nbsp;in&nbsp;the&nbsp;data&nbsp;store.</tt></dd></dl>
-</td></tr></table>
+<td width="100%"><dl><dt><a name="-add_housing_info"><strong>add_housing_info</strong></a>(address, link)</dt><dd><tt>a&nbsp;function&nbsp;to&nbsp;add&nbsp;a&nbsp;housing</tt></dd></dl>
+ <dl><dt><a name="-delete_housing_info"><strong>delete_housing_info</strong></a>(id)</dt><dd><tt>a&nbsp;function&nbsp;to&nbsp;delete&nbsp;a&nbsp;housing</tt></dd></dl>
+ <dl><dt><a name="-get_all_housing"><strong>get_all_housing</strong></a>()</dt><dd><tt>A&nbsp;function&nbsp;to&nbsp;return&nbsp;all&nbsp;housings&nbsp;in&nbsp;the&nbsp;data&nbsp;store.</tt></dd></dl>
+ <dl><dt><a name="-get_housing_info"><strong>get_housing_info</strong></a>(id)</dt><dd><tt>A&nbsp;function&nbsp;to&nbsp;return&nbsp;a&nbsp;detailed&nbsp;housing&nbsp;with&nbsp;specified&nbsp;ID</tt></dd></dl>
+ <dl><dt><a name="-get_housing_info_link"><strong>get_housing_info_link</strong></a>(id)</dt><dd><tt>a&nbsp;function&nbsp;to&nbsp;return&nbsp;the&nbsp;web&nbsp;link&nbsp;for&nbsp;a&nbsp;housing&nbsp;with&nbsp;specified&nbsp;ID</tt></dd></dl>
+ <dl><dt><a name="-get_user_info"><strong>get_user_info</strong></a>(username)</dt><dd><tt>A&nbsp;function&nbsp;to&nbsp;return&nbsp;a&nbsp;detailed&nbsp;user&nbsp;with&nbsp;specified&nbsp;ID</tt></dd></dl>
+ <dl><dt><a name="-login"><strong>login</strong></a>(username, password)</dt><dd><tt>A&nbsp;function&nbsp;to&nbsp;return&nbsp;a&nbsp;login&nbsp;status</tt></dd></dl>
+ <dl><dt><a name="-signup"><strong>signup</strong></a>(username, password)</dt><dd><tt>A&nbsp;function&nbsp;to&nbsp;signup</tt></dd></dl>
+ <dl><dt><a name="-update_housing_info"><strong>update_housing_info</strong></a>(id, address)</dt><dd><tt>a&nbsp;function&nbsp;to&nbsp;update&nbsp;a&nbsp;housing&nbsp;address</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>all_housings</strong> = {1: ['33 Bond Street', 'www.housing.com'], 2: ['Avalon Ave', 'www.housing.com'], 3: ['474 Warrent Street', 'www.housing.com'], 4: ['485 Clermont Ave', 'www.housing.com'], 5: ['110 Sex Street', 'www.housing.com'], 6: ['239 Hell Ave', 'www.housing.com']}<br>
+<strong>all_users</strong> = {'jack': '456', 'thommy': '123'}</td></tr></table>
 </body></html>
