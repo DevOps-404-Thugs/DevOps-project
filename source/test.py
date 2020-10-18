@@ -143,13 +143,13 @@ class DeleteHouseInfo(unittest.TestCase):
 
     def test_delete_house_info(self):
         # test the method deleting house information
-        response = self.client.delete("/delete/1", data={})
+        response = self.client.delete("/delete/2", data={})
         resp_json = response.data
         resp = json.loads(resp_json)
         self.assertEqual(resp, "success")
 
         # test whether the deleting is a success
-        response = self.client.get("/housings/1", data={})
+        response = self.client.get("/housings/2", data={})
         resp_json = response.data
         resp = json.loads(resp_json)
         self.assertIsNone(resp)
