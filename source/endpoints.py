@@ -41,12 +41,12 @@ class User(db.Document):
     """
     This class defines the database for a generic user type for login/signup
     """
-    user_id = db.IntField()
+    user_name = db.StringField()
     user_pwd = db.StringField()
 
     def to_json(self):
         return {
-            "user_id": self.user_id,
+            "user_name": self.user_name,
             "user_pwd": self.user_pwd
         }
 
@@ -68,14 +68,19 @@ class HousingDB(Resource):
                            address="438 Dumb Street")
         housing1.save()
         housing2.save()
+        user1 = User(user_name="tommy",
+                     user_pwd="tandonCS")
+        user2 = User(user_name="david",
+                     user_pwd="tandonCS")
+        user1.save()
+        user2.save()
         return make_response("", 201)
 
 
 @api.route('/housings')
 class AllHousings(Resource):
     """
-    This class will serve as live, fetchable documentation of what endpoints
-    are available in the system
+    This class will serve as GET and POST for all housings
     """
     def get(self):
         """
@@ -138,6 +143,32 @@ class HelloWorld(Resource):
         First endpoint to bridge running server
         """
         return {'hello': 'world'}
+
+
+@api.route('/users')
+class AllUsers(Resource):
+    """
+    This class will serve as users GET and creation
+    """
+    def get(self):
+        """
+        The `get()` method will return all users username+pwd
+        """
+        users = []
+        for user in User.objects:
+            users.append(user)
+        return make_response(jsonify(users), 200)
+
+    def post(self):
+        """
+        The `post()` method will create new username+pwd
+        """
+        content = request.json
+        user = User(user_name=content['user_name'],
+                    user_pwd=content['user_pwd']
+                    )
+        user.save()
+        return make_response("", 201)
 
 
 @api.route('/login')
