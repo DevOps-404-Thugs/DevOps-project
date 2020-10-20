@@ -166,7 +166,7 @@ class Signup(Resource):
         """
         args = parser.parse_args()
         signup(args['username'], args['password'])
-        return ''
+        return 'success'
 
 
 @api.route('/endpoints')
