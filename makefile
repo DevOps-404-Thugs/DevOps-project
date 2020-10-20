@@ -12,6 +12,8 @@ tests: lint unit
 unit: FORCE
 	echo "we have to write some tests!"
 
+github: FORCE
+
 lint: FORCE
 	$(LINTER) $(SRC_DIR)/*.py
 
