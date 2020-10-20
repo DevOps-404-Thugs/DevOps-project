@@ -3,14 +3,16 @@ This is the file containing all of the endpoints for our flask web app - iHomie
 The endpoint called `endpoints` will return all available endpoints
 """
 
-from flask import Flask, make_response, request, jsonify
+from flask import Flask, make_response, request, jsonify, render_template
 from flask_restx import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
+from flask_cors import CORS
 from api_config import DB_URI
 from db import get_user_info, login, signup
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 parser = reqparse.RequestParser()
 parser.add_argument('username')
 parser.add_argument('password')
@@ -213,6 +215,10 @@ class Endpoints(Resource):
         """
         return {'end': 'point'}
 
+
+@app.route("/ihomie")
+def index_page():
+    return render_template("index.html", flask_token="iHomie")
 
 if __name__ == '__main__':
     app.run(debug=True)
