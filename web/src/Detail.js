@@ -54,12 +54,58 @@ function ModifyButton(props) {
   );
 }
 
-function Description(props) {
+class Description extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "fake name",
+      address: "fake address"
+    };
+  }
+
+  async componentDidMount() {
+    const response = await fetch("/housings/1").then(res => res.json());
+    this.setState(response);
+  }
+
+  render() {
+    const {name, address} = this.state;
+    return (
+      <div className="details col-md-6">
+        <>
+          <h3 className="product-title">{name}</h3>
+          <p className="product-description">{address}</p>
+          <Rating stars="2" numReviews="99"/>
+          <p className="product-description">A property description is the written portion of a real estate listing that describes the real estate for sale or lease. Nowadays, most buyers begin their property search online. Therefore, real estate descriptions are your best chance to sway buyers and sellers.</p>
+          <h4 className="price">current price: <span>$1800</span></h4>
+          <p className="vote"><strong>Property ID</strong> 15599</p>
+          <p className="vote"><strong>Location</strong> US</p>
+          <p className="vote"><strong>Property Type</strong> House</p>
+          <p className="vote"><strong>Status</strong> Rent</p>
+  
+          <div className="action">
+            <>
+              <DeleteButton />
+              <ModifyButton />
+            </>
+          </div>
+        </>
+      </div>
+    );
+  }
+}
+
+/*
+async function Description(props) {
+  const response = await fetch("/housings/1").then(res => res.json());
+  props.name = response.name;
+  props.address = response.address;
+  console.log(response);
   return (
     <div className="details col-md-6">
       <>
-        <h3 className="product-title">304 Blaster Up</h3>
-        <p className="product-description">Chicago, IL 606543</p>
+        <h3 className="product-title">{props.name}</h3>
+        <p className="product-description">{props.address}</p>
         <Rating stars="2" numReviews="99"/>
         <p className="product-description">A property description is the written portion of a real estate listing that describes the real estate for sale or lease. Nowadays, most buyers begin their property search online. Therefore, real estate descriptions are your best chance to sway buyers and sellers.</p>
         <h4 className="price">current price: <span>$1800</span></h4>
@@ -78,6 +124,7 @@ function Description(props) {
     </div>
   );
 }
+*/
 
 function Container(props) {
   return (
