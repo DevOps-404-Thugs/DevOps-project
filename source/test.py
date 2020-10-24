@@ -87,19 +87,19 @@ class HousingItemTest(unittest.TestCase):
 
     def test_put_housing_item(self):
         info = {'name': '342 Gold Ave', 'address': '342 Gold Street'}
-        response = self.client.put("/housings/6", data=info)
+        response = self.client.put("/housings/4", data=info)
         self.assertEqual(response.status_code, 204)
 
-        response = self.client.get("/housings/6", data={})
+        response = self.client.get("/housings/4", data={})
         resp_json = response.data
         resp = json.loads(resp_json)
         self.assertEqual(resp.get("address"), "342 Gold Street")
 
         info = {'name': '343 Gold Ave', 'address': '343 Gold Street'}
-        response = self.client.put("/housings/6", data=info)
+        response = self.client.put("/housings/4", data=info)
         self.assertEqual(response.status_code, 204)
 
-        response = self.client.get("/housings/6", data={})
+        response = self.client.get("/housings/4", data={})
         resp_json = response.data
         resp = json.loads(resp_json)
         self.assertEqual(resp.get("address"), "343 Gold Street")
