@@ -63,12 +63,6 @@ class HousingsTest(unittest.TestCase):
         resp = response.status_code
         self.assertEqual(resp, 201)
 
-        response = self.client.get("/housings", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        info = resp[id - 1].get("address")
-        self.assertEqual(info, "343 Gold Street")
-
 
 class HousingItemTest(unittest.TestCase):
     def setUp(self):
