@@ -10,7 +10,7 @@ prod: tests github
 tests: lint unit
 
 unit: FORCE
-	echo "we have to write some tests!"
+	cd source; python3 test.py
 
 github: FORCE
 
