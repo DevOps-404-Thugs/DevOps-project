@@ -35,23 +35,6 @@ class EndpointsTest(unittest.TestCase):
         end = resp.get("end")
         self.assertEqual(end, "point")
 
-    class HousingDBTest(unittest.TestCase):
-        def setUp(self):
-            self.app = app
-            app.config['TESTING'] = True
-            self.client = app.test_client()
-
-        def test_post_info(self):
-            # # test the method hello world
-            response = self.client.post("/db_populate")
-            self.assertEqual(response.status_code, 201)
-
-            response = self.client.get("/housings", data={})
-            resp_json = response.data
-            resp = json.loads(resp_json)
-            info = resp[3].get("address")
-            self.assertEqual(info, "867 Aagon Ave")
-
 
 class HousingsTest(unittest.TestCase):
     def setUp(self):
@@ -107,21 +90,19 @@ class HousingItemTest(unittest.TestCase):
         response = self.client.put("/housings/6", data=info)
         self.assertEqual(response.status_code, 204)
 
-        response = self.client.get("/housings", data={})
+        response = self.client.get("/housings/6", data={})
         resp_json = response.data
         resp = json.loads(resp_json)
-        info = resp[5].get("address")
-        self.assertEqual(info, "342 Gold Street")
+        self.assertEqual(resp.get("address"), "342 Gold Street")
 
         info = {'name': '343 Gold Ave', 'address': '343 Gold Street'}
         response = self.client.put("/housings/6", data=info)
         self.assertEqual(response.status_code, 204)
 
-        response = self.client.get("/housings", data={})
+        response = self.client.get("/housings/6", data={})
         resp_json = response.data
         resp = json.loads(resp_json)
-        info = resp[5].get("address")
-        self.assertEqual(info, "343 Gold Street")
+        self.assertEqual(resp.get("address"), "343 Gold Street")
 
     def test_delete_housing_item(self):
         response = self.client.get("/housings", data={})
@@ -132,9 +113,6 @@ class HousingItemTest(unittest.TestCase):
         if (length > 0):
             response = self.client.delete("/housings/%s" % id)
             self.assertEqual(response.status_code, 204)
-
-        response = self.client.get("/housings/%s" % id)
-        self.assertEqual(response.status_code, 404)
 
 
 class AllUsersTest(unittest.TestCase):
@@ -199,6 +177,35 @@ class SignupTest(unittest.TestCase):
         resp_json = response.data
         resp = json.loads(resp_json)
         self.assertEqual(resp, "betty")
+
+
+class IndexPageTest(unittest.TestCase):
+    def setUp(self):
+        self.app = app
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+    def test_index_page(self):
+        # test the method getting endpoints
+        response = self.client.get("/ihomie")
+        self.assertEqual(response.status_code, 200)
+
+
+class HousingDBTest(unittest.TestCase):
+    def setUp(self):
+        self.app = app
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+    def test_post_info(self):
+        response = self.client.post("/db_populate")
+        self.assertEqual(response.status_code, 201)
+
+        response = self.client.get("/housings", data={})
+        resp_json = response.data
+        resp = json.loads(resp_json)
+        info = resp[3].get("address")
+        self.assertEqual(info, "867 Aagon Ave")
 
 
 if __name__ == '__main__':
