@@ -3,12 +3,13 @@ This is the file containing all of the endpoints for our flask web app - iHomie
 The endpoint called `endpoints` will return all available endpoints
 """
 
-from flask import Flask, make_response, request, jsonify, render_template
+from flask import Flask, make_response, request, jsonify, render_template, url_for
 from flask_restx import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
 from flask_cors import CORS
 from api_config import DB_URI
 from db import get_user_info, login, signup
+from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
 api = Api(app)
@@ -43,11 +44,13 @@ class User(db.Document):
     """
     This class defines the database for a generic user type for login/signup
     """
+    uid = db.Column(db.Integer, primary_key=True)
     user_name = db.StringField()
     user_pwd = db.StringField()
 
     def to_json(self):
         return {
+            "uid": self.uid,
             "user_name": self.user_name,
             "user_pwd": self.user_pwd
         }
@@ -70,9 +73,11 @@ class HousingDB(Resource):
                            address="438 Dumb Street")
         housing1.save()
         housing2.save()
-        user1 = User(user_name="tommy",
+        user1 = User(uid="1",
+                     user_name="tommy",
                      user_pwd="tandonCS")
-        user2 = User(user_name="david",
+        user2 = User(uid="2",
+                     user_name="david",
                      user_pwd="tandonCS")
         user1.save()
         user2.save()
@@ -140,11 +145,27 @@ class HousingItem(Resource):
 
 @api.route('/hello')
 class HelloWorld(Resource):
+    @app.route("/greeting")
+    def greeting():
+        """
+        set for dummy app route
+        """
+        test_housings = [{'housing_id': '1',
+                          'name': '123 Great',
+                          'address': '123 Great Ave',
+                          'content': 'Renting now, $1500 per month'},
+                          {'housing_id': '2',
+                          'name': '234 Great',
+                          'address': '234 Great Ave',
+                          'content': 'Renting now, $2300 per month'},
+                          ]
+        return render_template('home.html', housings=test_housings)
+
     def get(self):
         """
         First endpoint to bridge running server
         """
-        return {'hello': 'world'}
+        return "{'hello': 'world'}"
 
 
 @api.route('/users')
@@ -216,9 +237,31 @@ class Endpoints(Resource):
         return {'end': 'point'}
 
 
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect(url_for('home'))
+    return render_template('register.html', title='Register', form=form)
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
+            flash('You have been logged in!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Login Unsuccessful. Please check username and password', 'danger')
+    return render_template('login.html', title='Login', form=form)
+
+
 @app.route("/ihomie")
 def index_page():
     return render_template("index.html", flask_token="iHomie")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for housing in housings %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ housing.housing_id }}</a>
+              <small class="text-muted">{{ housing.name }}</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ housing.address }}</a></h2>
+            <p class="article-content">{{ housing.content }}</p>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
