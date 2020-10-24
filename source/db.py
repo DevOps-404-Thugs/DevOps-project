@@ -15,52 +15,6 @@ all_users = {"thommy": "123",
              "jack": "456"}
 
 
-def get_all_housing():
-    """
-    A function to return all housings in the data store.
-    """
-    return all_housings
-
-
-def get_housing_info(id):
-    """
-    A function to return a detailed housing with specified ID
-    """
-    return None if all_housings.get(id) is None else all_housings.get(id)
-
-
-def get_housing_info_link(id):
-    """
-    a function to return the web link for a housing with specified ID
-    """
-    return None if all_housings.get(id) is None or \
-                   len(all_housings.get(id)) < 2 else all_housings.get(id)[1]
-
-
-def add_housing_info(address, link):
-    """
-    a function to add a housing
-    """
-    id = max(all_housings.keys()) + 1
-    all_housings[id] = [address, link]
-
-
-def update_housing_info(id, address):
-    """
-    a function to update a housing address
-    """
-    if all_housings.get(id) is not None:
-        all_housings.get(id)[0] = address
-
-
-def delete_housing_info(id):
-    """
-    a function to delete a housing
-    """
-    if all_housings.get(id) is not None:
-        del (all_housings[id])
-
-
 def get_user_info(username):
     """
     A function to return a detailed user with specified ID
