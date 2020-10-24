@@ -33,8 +33,8 @@ def get_housing_info_link(id):
     """
     a function to return the web link for a housing with specified ID
     """
-    return None if all_housings.get(id)is None or \
-        len(all_housings.get(id)) < 2 else all_housings.get(id)[1]
+    return None if all_housings.get(id) is None or \
+                   len(all_housings.get(id)) < 2 else all_housings.get(id)[1]
 
 
 def add_housing_info(address, link):
@@ -58,7 +58,7 @@ def delete_housing_info(id):
     a function to delete a housing
     """
     if all_housings.get(id) is not None:
-        del(all_housings[id])
+        del (all_housings[id])
 
 
 def get_user_info(username):

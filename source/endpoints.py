@@ -3,19 +3,25 @@ This is the file containing all of the endpoints for our flask web app - iHomie
 The endpoint called `endpoints` will return all available endpoints
 """
 
-from flask import Flask, make_response, request, jsonify, render_template
-from flask_restx import Resource, Api, reqparse
-from flask_mongoengine import MongoEngine
-from flask_cors import CORS
 from api_config import DB_URI
 from db import get_user_info, login, signup
+from flask_cors import CORS
+from flask_mongoengine import MongoEngine
+from flask_restx import Resource, Api, reqparse
+from flask import Flask, make_response, jsonify, \
+    render_template
 
 app = Flask(__name__)
 api = Api(app)
 CORS(app)
 parser = reqparse.RequestParser()
-parser.add_argument('username')
-parser.add_argument('password')
+parser.add_argument('user_name')
+parser.add_argument('user_pwd')
+
+parserHousing = reqparse.RequestParser()
+parserHousing.add_argument('housing_id')
+parserHousing.add_argument('name')
+parserHousing.add_argument('address')
 
 app.config["MONGODB_HOST"] = DB_URI
 
@@ -58,6 +64,7 @@ class HousingDB(Resource):
     """
     This class will populate a demo initial housings database for housings
     """
+
     def post(self):
         """
         populate the initial database, returns 201 on success
@@ -84,6 +91,7 @@ class AllHousings(Resource):
     """
     This class will serve as GET and POST for all housings
     """
+
     def get(self):
         """
         The `get()` method will return all housing information
@@ -97,7 +105,7 @@ class AllHousings(Resource):
         """
         The `post()` method will create new housing detail
         """
-        content = request.json
+        content = parserHousing.parse_args()
         housing = Housing(housing_id=content['housing_id'],
                           name=content['name'],
                           address=content['address'])
@@ -110,6 +118,7 @@ class HousingItem(Resource):
     """
     This class serves to get, put, and delete housing item
     """
+
     def get(self, housing_id):
         """
         GET/  return housing details of housing with _id
@@ -124,7 +133,7 @@ class HousingItem(Resource):
         """
         PUT/ update housing details of housing with _id, 204 on success
         """
-        content = request.json
+        content = parserHousing.parse_args()
         housing_obj = Housing.objects(housing_id=housing_id).first()
         housing_obj.update(name=content['name'], address=content['address'])
         return make_response("", 204)
@@ -152,6 +161,7 @@ class AllUsers(Resource):
     """
     This class will serve as users GET and creation
     """
+
     def get(self):
         """
         The `get()` method will return all users username+pwd
@@ -165,7 +175,7 @@ class AllUsers(Resource):
         """
         The `post()` method will create new username+pwd
         """
-        content = request.json
+        content = parser.parse_args()
         user = User(user_name=content['user_name'],
                     user_pwd=content['user_pwd']
                     )
@@ -178,13 +188,14 @@ class Login(Resource):
     """
     This class supports fetching a list of all housings
     """
+
     def get(self):
         """
         this method used for login
         """
         args = parser.parse_args()
-        username = args['username']
-        password = args['password']
+        username = args['user_name']
+        password = args['user_pwd']
         return get_user_info(username) if login(username, password) else None
 
 
@@ -193,12 +204,13 @@ class Signup(Resource):
     """
     This class supports fetching a list of all housings
     """
+
     def put(self):
         """
         this method adds new user information
         """
         args = parser.parse_args()
-        signup(args['username'], args['password'])
+        signup(args['user_name'], args['user_pwd'])
         return 'success'
 
 
@@ -208,6 +220,7 @@ class Endpoints(Resource):
     This class will serve as live, fetchable documentation of what endpoints
     are available in the system
     """
+
     def get(self):
         """
         The `get()` method will return a list of endpoitns along with
@@ -219,6 +232,7 @@ class Endpoints(Resource):
 @app.route("/ihomie")
 def index_page():
     return render_template("index.html", flask_token="iHomie")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

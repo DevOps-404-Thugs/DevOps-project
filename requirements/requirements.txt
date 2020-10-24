@@ -1,2 +1,7 @@
 flask
 flask-restx
+flask_mongoengine
+flask_cors
+dnspython
+mongoengine
+flask-wtf
