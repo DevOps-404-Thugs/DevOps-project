@@ -37,6 +37,8 @@ mydb = client["API"]
 userCollection = mydb["tempuser"]
 
 login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'
 
 parser = reqparse.RequestParser()
 parser.add_argument('username')
@@ -329,7 +331,8 @@ def login():
         check_user = Tempuser.objects(email=form.email.data).first()
         if check_user and bcrypt.check_password_hash(check_user["password"], form.password.data):
             login_user(check_user)
-            return redirect(url_for('home'))
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -345,6 +348,18 @@ def home():
                  'address': '438 Local Dumb Street'}
                  ]
     return render_template("home.html", housings=housings)
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+
+@app.route("/account")
+@login_required
+def account():
+    return render_template('account.html', title='Account')
 
 
 if __name__ == '__main__':
