@@ -3,25 +3,88 @@ This is the file containing all of the endpoints for our flask web app - iHomie
 The endpoint called `endpoints` will return all available endpoints
 """
 
-from flask import Flask, make_response, request, jsonify, render_template, url_for
+from flask import Flask, make_response, request, jsonify, render_template, url_for, flash, redirect
 from flask_restx import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
+from flask_wtf import FlaskForm
 from flask_cors import CORS
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager, login_user, current_user, logout_user, login_required
+from flask_login import UserMixin
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from api_config import DB_URI
 from db import get_user_info, login, signup
-from forms import RegistrationForm, LoginForm
+# from forms import RegistrationForm, LoginForm
+from pymongo import MongoClient
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '68fe6951d932820ac5d2a0b5d352d77a'
 api = Api(app)
 CORS(app)
+bcrypt = Bcrypt(app)
+
+app.config["MONGODB_HOST"] = DB_URI
+app.config['MONGODB_SETTINGS'] = {
+    'db': 'API',
+    'host': DB_URI
+}
+db = MongoEngine()
+db.init_app(app)
+
+client = MongoClient(DB_URI)
+mydb = client["API"] 
+userCollection = mydb["tempuser"]
+
+login_manager = LoginManager(app)
+
 parser = reqparse.RequestParser()
 parser.add_argument('username')
 parser.add_argument('password')
 
-app.config["MONGODB_HOST"] = DB_URI
+class RegistrationForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
 
-db = MongoEngine()
-db.init_app(app)
+    def validate_username(self, username):
+        query = {"username": username.data}
+        if userCollection.find(query).count() > 0:
+            raise ValidationError('That username is taken. Please choose a different one.')
+
+    def validate_email(self, email):
+        query = {"email": email.data}
+        if userCollection.find(query).count() > 0:
+            raise ValidationError('That email is taken. Please choose a different one.')
+
+
+class LoginForm(FlaskForm):
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Login')
+
+
+@app.route("/test")
+def test():
+    query = {"username": "david"}
+    user = userCollection.find(query) # <pymongo.cursor.Cursor object at 0x10eb0eed0>
+    print('user: ')
+    print(user) 
+    # print('password: ')
+    # print(user["password"])
+    # print('each doc in docs -------')
+    # for doc in docs:
+    #     print(doc)
+
+    print(userCollection.find(query).count())
+    return make_response("", 201)
 
 
 class Housing(db.Document):
@@ -44,15 +107,42 @@ class User(db.Document):
     """
     This class defines the database for a generic user type for login/signup
     """
-    uid = db.Column(db.Integer, primary_key=True)
-    user_name = db.StringField()
-    user_pwd = db.StringField()
+    username = db.StringField()
+    email = db.StringField()
+    password = db.StringField()
 
     def to_json(self):
         return {
-            "uid": self.uid,
-            "user_name": self.user_name,
-            "user_pwd": self.user_pwd
+            "username": self.username,
+            "email": self.email,
+            "password": self.password
+        }
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Tempuser.objects(pk=user_id).first()
+    # query = {"id": user_id}
+    # return userCollection.find_one(query)
+    # return User.query.get(int(user_id))
+
+
+class Tempuser(db.Document, UserMixin):
+    """
+    This class defines the database for a generic user type for login/signup
+    """
+    meta = {'collection': 'tempuser'}
+    # uid = db.IntField()
+    username = db.StringField()
+    email = db.StringField()
+    password = db.StringField()
+
+    def to_json(self):
+        return {
+            # "uid": self.self.uid,
+            "username": self.username,
+            "email": self.email,
+            "password": self.password
         }
 
 
@@ -65,22 +155,30 @@ class HousingDB(Resource):
         """
         populate the initial database, returns 201 on success
         """
-        housing1 = Housing(housing_id=4,
-                           name="867 Aagon Alley",
-                           address="867 Aagon Ave")
-        housing2 = Housing(housing_id=5,
-                           name="438 Gu Yillage",
-                           address="438 Dumb Street")
-        housing1.save()
-        housing2.save()
-        user1 = User(uid="1",
-                     user_name="tommy",
-                     user_pwd="tandonCS")
-        user2 = User(uid="2",
-                     user_name="david",
-                     user_pwd="tandonCS")
-        user1.save()
-        user2.save()
+        # housing1 = Housing(housing_id=4,
+        #                    name="867 Aagon Alley",
+        #                    address="867 Aagon Ave")
+        # housing2 = Housing(housing_id=5,
+        #                    name="438 Gu Yillage",
+        #                    address="438 Dumb Street")
+        # housing1.save()
+        # housing2.save()
+
+        tempuser1 =  Tempuser(uid=1,
+                     username="tommy",
+                     email="tommy@gmail.com",
+                     password="123123")
+        tempuser2 =  Tempuser(uid=2,
+             username="david",
+             email="david@gmail.com",
+             password="123123")
+        tempuser3 =  Tempuser(uid=3,
+             username="sara",
+             email="sara@gmail.com",
+             password="123123")
+        tempuser1.save()
+        tempuser2.save()
+        tempuser3.save()
         return make_response("", 201)
 
 
@@ -194,35 +292,6 @@ class AllUsers(Resource):
         return make_response("", 201)
 
 
-@api.route('/login')
-class Login(Resource):
-    """
-    This class supports fetching a list of all housings
-    """
-    def get(self):
-        """
-        this method used for login
-        """
-        args = parser.parse_args()
-        username = args['username']
-        password = args['password']
-        return get_user_info(username) if login(username, password) else None
-
-
-@api.route('/signup')
-class Signup(Resource):
-    """
-    This class supports fetching a list of all housings
-    """
-    def put(self):
-        """
-        this method adds new user information
-        """
-        args = parser.parse_args()
-        signup(args['username'], args['password'])
-        return 'success'
-
-
 @api.route('/endpoints')
 class Endpoints(Resource):
     """
@@ -239,28 +308,43 @@ class Endpoints(Resource):
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = Tempuser(username=form.username.data, email=form.email.data, password=hashed_password)
+        user.save()
+        flash('Your account has been created! You are now able to log in', 'success')
+        return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
+        check_user = Tempuser.objects(email=form.email.data).first()
+        if check_user and bcrypt.check_password_hash(check_user["password"], form.password.data):
+            login_user(check_user)
             return redirect(url_for('home'))
         else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
+            flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 
-@app.route("/ihomie")
-def index_page():
-    return render_template("index.html", flask_token="iHomie")
+@app.route("/home")
+def home():
+    housings = [{'housing_id': 4,
+                 'name': '867 Local Aagon Alley',
+                 'address': '867 Local Aagon Ave'}, 
+                 {'housing_id': 5,
+                 'name': '438 Local Gu Yillage',
+                 'address': '438 Local Dumb Street'}
+                 ]
+    return render_template("home.html", housings=housings)
 
 
 if __name__ == '__main__':
