@@ -3,23 +3,27 @@ This is the file containing all of the endpoints for our flask web app - iHomie
 The endpoint called `endpoints` will return all available endpoints
 """
 
-from flask import Flask, make_response, request, jsonify, render_template, url_for, flash, redirect
+from flask import Flask, make_response, request, jsonify, \
+    render_template, url_for, flash, redirect, abort
 from flask_restx import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
 from flask_wtf import FlaskForm
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from flask_login import LoginManager, login_user, current_user, logout_user, login_required
-from flask_login import UserMixin
+from flask_login import LoginManager, login_user, current_user, \
+    logout_user, login_required, UserMixin
+from flask_objectid_converter import ObjectIDConverter
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, \
+    Email, EqualTo, ValidationError
 from api_config import DB_URI
-from db import get_user_info, login, signup
-# from forms import RegistrationForm, LoginForm
 from pymongo import MongoClient
+import datetime
 
 app = Flask(__name__)
+app.url_map.converters['objectid'] = ObjectIDConverter
 app.config['SECRET_KEY'] = '68fe6951d932820ac5d2a0b5d352d77a'
+
 api = Api(app)
 CORS(app)
 bcrypt = Bcrypt(app)
@@ -33,8 +37,9 @@ db = MongoEngine()
 db.init_app(app)
 
 client = MongoClient(DB_URI)
-mydb = client["API"] 
+mydb = client["API"]
 userCollection = mydb["tempuser"]
+housingCollection = mydb["temphousing"]
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -44,25 +49,28 @@ parser = reqparse.RequestParser()
 parser.add_argument('username')
 parser.add_argument('password')
 
+
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(), EqualTo('password')])
+    confirm_password = PasswordField(
+        'Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
         query = {"username": username.data}
         if userCollection.find(query).count() > 0:
-            raise ValidationError('That username is taken. Please choose a different one.')
+            raise ValidationError('That username is taken. \
+                Please choose a different one.')
 
     def validate_email(self, email):
         query = {"email": email.data}
         if userCollection.find(query).count() > 0:
-            raise ValidationError('That email is taken. Please choose a different one.')
+            raise ValidationError('That email is taken. \
+                Please choose a different one.')
 
 
 class LoginForm(FlaskForm):
@@ -73,20 +81,32 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 
-@app.route("/test")
-def test():
-    query = {"username": "david"}
-    user = userCollection.find(query) # <pymongo.cursor.Cursor object at 0x10eb0eed0>
-    print('user: ')
-    print(user) 
-    # print('password: ')
-    # print(user["password"])
-    # print('each doc in docs -------')
-    # for doc in docs:
-    #     print(doc)
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    submit = SubmitField('Update')
 
-    print(userCollection.find(query).count())
-    return make_response("", 201)
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = Tempuser.objects(username=username.data).first()
+            if user:
+                raise ValidationError('That username is taken. \
+                    Please choose a different one.')
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = Tempuser.objects(email=email.data).first()
+            if user:
+                raise ValidationError('That email is taken. \
+                    Please choose a different one.')
+
+
+class HousingForm(FlaskForm):
+    name = StringField('Housing Name', validators=[DataRequired()])
+    address = StringField('Housing Address', validators=[DataRequired()])
+    submit = SubmitField('Post')
 
 
 class Housing(db.Document):
@@ -124,9 +144,6 @@ class User(db.Document):
 @login_manager.user_loader
 def load_user(user_id):
     return Tempuser.objects(pk=user_id).first()
-    # query = {"id": user_id}
-    # return userCollection.find_one(query)
-    # return User.query.get(int(user_id))
 
 
 class Tempuser(db.Document, UserMixin):
@@ -134,17 +151,36 @@ class Tempuser(db.Document, UserMixin):
     This class defines the database for a generic user type for login/signup
     """
     meta = {'collection': 'tempuser'}
-    # uid = db.IntField()
     username = db.StringField()
     email = db.StringField()
     password = db.StringField()
 
     def to_json(self):
         return {
-            # "uid": self.self.uid,
             "username": self.username,
             "email": self.email,
             "password": self.password
+        }
+
+
+class Temphousing(db.Document):
+    """
+    This class defines the database for a generic housing type
+    """
+    meta = {'collection': 'temphousing'}
+    name = db.StringField()
+    address = db.StringField()
+    date_posted = db.DateTimeField()
+    author_id = db.StringField()
+    author_username = db.StringField()
+
+    def to_json(self):
+        return {
+            "housing_id": self.housing_id,
+            "name": self.name,
+            "address": self.address,
+            "author_id": self.author_id,
+            "author_username": db.StringField()
         }
 
 
@@ -157,30 +193,22 @@ class HousingDB(Resource):
         """
         populate the initial database, returns 201 on success
         """
-        # housing1 = Housing(housing_id=4,
-        #                    name="867 Aagon Alley",
-        #                    address="867 Aagon Ave")
-        # housing2 = Housing(housing_id=5,
-        #                    name="438 Gu Yillage",
-        #                    address="438 Dumb Street")
-        # housing1.save()
-        # housing2.save()
-
-        tempuser1 =  Tempuser(uid=1,
-                     username="tommy",
-                     email="tommy@gmail.com",
-                     password="123123")
-        tempuser2 =  Tempuser(uid=2,
-             username="david",
-             email="david@gmail.com",
-             password="123123")
-        tempuser3 =  Tempuser(uid=3,
-             username="sara",
-             email="sara@gmail.com",
-             password="123123")
+        tempuser1 = Tempuser(
+            username="tommy",
+            email="tommy@gmail.com",
+            password="123123")
+        tempuser2 = Tempuser(
+            username="david",
+            email="david@gmail.com",
+            password="123123")
+        tempuser3 = Tempuser(
+            username="sara",
+            email="sara@gmail.com",
+            password="123123")
         tempuser1.save()
         tempuser2.save()
         tempuser3.save()
+
         return make_response("", 201)
 
 
@@ -243,23 +271,14 @@ class HousingItem(Resource):
         return make_response("", 204)
 
 
-@api.route('/hello')
+@api.route('/greeting')
 class HelloWorld(Resource):
     @app.route("/greeting")
     def greeting():
         """
         set for dummy app route
         """
-        test_housings = [{'housing_id': '1',
-                          'name': '123 Great',
-                          'address': '123 Great Ave',
-                          'content': 'Renting now, $1500 per month'},
-                          {'housing_id': '2',
-                          'name': '234 Great',
-                          'address': '234 Great Ave',
-                          'content': 'Renting now, $2300 per month'},
-                          ]
-        return render_template('home.html', housings=test_housings)
+        return render_template('home.html', housings=get_all_housings())
 
     def get(self):
         """
@@ -294,18 +313,67 @@ class AllUsers(Resource):
         return make_response("", 201)
 
 
-@api.route('/endpoints')
-class Endpoints(Resource):
-    """
-    This class will serve as live, fetchable documentation of what endpoints
-    are available in the system
-    """
-    def get(self):
-        """
-        The `get()` method will return a list of endpoitns along with
-        documentation on them
-        """
-        return {'end': 'point'}
+@app.route("/housing/new", methods=['GET', 'POST'])
+@login_required
+def new_housing():
+    form = HousingForm()
+    if form.validate_on_submit():
+        housing = Temphousing(name=form.name.data,
+                              address=form.address.data,
+                              date_posted=datetime.datetime.now(),
+                              author_id=get_current_user_id(),
+                              author_username=current_user.username)
+        housing.save()
+        flash('Your housing has been created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('create_housing.html', title='New Housing',
+                           form=form, legend='New Housing')
+
+
+@app.route("/housing/<objectid:housing_id>")
+def post(housing_id):
+    housing = Temphousing.objects(pk=housing_id).first()
+    return render_template(
+                            'housing.html',
+                            name=housing.name,
+                            address=housing.address,
+                            housing_id=housing_id,
+                            housing=housing,
+                            current_user_id=get_current_user_id()
+                            )
+
+
+@app.route("/housing/<objectid:housing_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_housing(housing_id):
+    housing = Temphousing.objects(pk=housing_id).first()
+    if housing.author_id != get_current_user_id():
+        abort(403)
+    form = HousingForm()
+    if form.validate_on_submit():
+        housing.name = form.name.data
+        housing.address = form.address.data
+        housing.save()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('post', housing_id=housing_id))
+    elif request.method == 'GET':
+        form.name.data = housing.name
+        form.address.data = housing.address
+
+    return render_template('create_housing.html', title='Update Housing',
+                           form=form, legend='Update Housing')
+
+
+@app.route("/housing/<objectid:housing_id>/delete", methods=['POST'])
+@login_required
+def delete_housing(housing_id):
+    housing = Temphousing.objects(pk=housing_id).first()
+    if housing.author_id != get_current_user_id():
+        abort(403)
+    delete_request = {"_id": housing_id}
+    housingCollection.delete_one(delete_request)
+    flash('Your post has been deleted!', 'success')
+    return redirect(url_for('home'))
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -314,10 +382,16 @@ def register():
         return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = Tempuser(username=form.username.data, email=form.email.data, password=hashed_password)
+        hashed_password = bcrypt.generate_password_hash(form.password.data). \
+            decode('utf-8')
+        user = Tempuser(
+                        username=form.username.data,
+                        email=form.email.data,
+                        password=hashed_password
+                        )
         user.save()
-        flash('Your account has been created! You are now able to log in', 'success')
+        flash('Your account has been created! \
+            You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -329,25 +403,22 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         check_user = Tempuser.objects(email=form.email.data).first()
-        if check_user and bcrypt.check_password_hash(check_user["password"], form.password.data):
-            login_user(check_user)
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+        if check_user:
+            if bcrypt.check_password_hash(check_user["password"],
+                                          form.password.data):
+                login_user(check_user)
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page \
+                    else redirect(url_for('home'))
         else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
+            flash('Login Unsuccessful. \
+                Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 
 @app.route("/home")
 def home():
-    housings = [{'housing_id': 4,
-                 'name': '867 Local Aagon Alley',
-                 'address': '867 Local Aagon Ave'}, 
-                 {'housing_id': 5,
-                 'name': '438 Local Gu Yillage',
-                 'address': '438 Local Dumb Street'}
-                 ]
-    return render_template("home.html", housings=housings)
+    return render_template("home.html", housings=get_all_housings())
 
 
 @app.route("/logout")
@@ -356,10 +427,65 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route("/account")
+@app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    form = UpdateAccountForm()
+    updated_user = {
+                    "$set": {
+                            'username': form.username.data,
+                            'email': form.email.data
+                            }
+                    }
+    if form.validate_on_submit():
+        query = {"username": current_user.username,
+                 "email": current_user.email}
+        userCollection.update_one(query, updated_user)
+        changed_param = "nothing"
+        if current_user.username != form.username.data \
+                and current_user.email != form.email.data:
+            changed_param = "account username and email"
+        elif current_user.username != form.username.data:
+            changed_param = "username"
+        elif current_user.email != form.email.data:
+            changed_param = "email"
+        else:
+            flash('Please use a different username or \
+                email than your current account', 'warning')
+            return redirect(url_for('account'))
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        flash('Your %s has been updated!' % changed_param, 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+
+    return render_template('account.html', title='Account', form=form)
+
+
+@login_required
+def get_current_user_id():
+    if current_user:
+        query = {"username": current_user.username,
+                 "email": current_user.email}
+        user = userCollection.find_one(query)
+        return str(user.get('_id'))
+
+
+@app.route("/test")
+def test():
+    # find a cursor object
+    user = userCollection.find_one({"username": "david"})
+    print(user.username)
+    return make_response("", 201)
+
+
+def get_all_housings():
+    housings = []
+    for housing in housingCollection.find():
+        housings.append(housing)
+    return housings
 
 
 if __name__ == '__main__':

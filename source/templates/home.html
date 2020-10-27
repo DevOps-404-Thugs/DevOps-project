@@ -4,11 +4,11 @@
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ housing.housing_id }}</a>
-              <small class="text-muted">{{ housing.name }}</small>
+              <a class="mr-2" href="#">{{ housing.author_username }}</a>
+              <small class="text-muted">{{ housing.date_posted.strftime('%Y-%m-%d') }}</small>
             </div>
-            <h2><a class="article-title" href="#">{{ housing.address }}</a></h2>
-            <p class="article-content">{{ housing.content }}</p>
+            <h2><a class="article-title" href="{{ url_for('post', housing_id=housing.get('_id')) }}">{{ housing.name }}</a></h2>
+            <p class="article-content">{{ housing.address }}</p>
           </div>
         </article>
     {% endfor %}
