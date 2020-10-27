@@ -10,7 +10,7 @@ prod: tests github
 tests: lint unit
 
 unit: FORCE
-	cd source; python3 test.py
+	cd source; coverage run test.py; coverage report endpoints.py
 
 github: FORCE
 
