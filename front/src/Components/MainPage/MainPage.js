@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import "./MainPage.css"
 
 
-export default function MainPage() {
+function MainPage() {
 
     const [Houses,setHouses] = useState([])//set as array 
 
@@ -54,3 +54,5 @@ export default function MainPage() {
         </div>
     )
 }
+
+export default MainPage;

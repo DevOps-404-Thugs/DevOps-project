@@ -1,20 +1,68 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import Axios from 'axios'
 
-//取参参考这个代码哈
-class Upload extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            id: this.props.match.params.id
-        };
+function Upload() {
+	const [nameValue, setNameValue] = useState("")
+	const [addressValue, setAddressValue] = useState("") 
+
+	const onNameChange = (event) => {
+		setNameValue(event.currentTarget.value)
+	}
+
+	const onAddressChange = (event) => {
+		setAddressValue(event.currentTarget.value)
+	}
+
+	const onSubmit = (event)=>{
+		event.preventDefault();
+		if(!nameValue || !addressValue){
+			return alert("Please fill in all fields!")
+		}
+
+		const variables = {
+			name : nameValue,
+			address : addressValue
 		}
 		
-    render(){
-			return(
-        <div>
-          <p>{this.state.id}</p>
-        </div>
-      );
-    }
+		Axios.post(`http://127.0.0.1:8000/housings`, variables)
+				.then(response => {
+					console.log(response.status)
+					if(response.status == 201){
+						alert("Upload successfully!")
+					}else{
+						alert("You meet with an error!")
+					}
+				})
+	}
+	
+
+	return(
+		<div>
+			<div style={{ textAlign: 'center' }}>
+                <h2>  Upload a New House </h2>
+      </div>
+
+			<form onSubmit={onSubmit}>
+				<label>Name</label>
+				<input onChange={onNameChange}></input>
+
+				<br/>
+				<br/>
+
+				<label>Address</label>
+				<input onChange={onAddressChange}></input>
+
+				<br/>
+				<br/>
+
+				<button onClick={onSubmit}>Submit</button>
+
+			</form>
+
+		</div>
+	)
+
+
 }
+
 export default Upload;
