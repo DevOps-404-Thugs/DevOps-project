@@ -450,6 +450,7 @@ def account():
         elif current_user.email != form.email.data:
             changed_param = "email"
         else:
+            # safely exit without update
             flash('Please use a different username or \
                 email than your current account', 'warning')
             return redirect(url_for('account'))
