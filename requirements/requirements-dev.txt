@@ -2,6 +2,7 @@ flake8
 flask
 flask-restx
 flask_mongoengine
+Bcrypt
 flask_cors
 dnspython
 mongoengine
