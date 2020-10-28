@@ -1,2 +1,10 @@
--r requirements.txt
 flake8
+flask
+flask-restx
+flask_mongoengine
+flask_cors
+dnspython
+mongoengine
+flask-wtf
+flask-login
+coverage
