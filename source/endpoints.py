@@ -477,8 +477,10 @@ def get_current_user_id():
 @app.route("/test")
 def test():
     # find a cursor object
+    print('current_user')
+    print(type(current_user))
     user = userCollection.find_one({"username": "david"})
-    print(user.username)
+    print(type(user))
     return make_response("", 201)
 
 
