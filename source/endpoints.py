@@ -4,7 +4,7 @@ The endpoint called `endpoints` will return all available endpoints
 """
 from bson.objectid import ObjectId
 from flask import Flask, make_response, request, jsonify, \
-    flash, session
+    session
 from flask_restx import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
 from flask_wtf import FlaskForm
@@ -203,7 +203,8 @@ class AllHousings(Resource):
         The `post()` method will create new housing detail
         """
         content = request.form
-        if content.get('name') is not None and content.get('address') is not None:
+        if content.get('name') is not None and \
+                content.get('address') is not None:
             housing = Housing(
                               name=content.get('name'),
                               address=content.get('address'),
@@ -240,7 +241,8 @@ class HousingItem(Resource):
         housing = Housing.objects(_id=ObjectId(housing_id)).first()
         if housing.author_id != get_current_user_id():
             return make_response("no authority", 400)
-        if content.get('name') is not None and content.get('address') is not None:
+        if content.get('name') is not None and \
+                content.get('address') is not None:
             housing.name = content.get('name')
             housing.address = content.get('address')
             housing.save()
@@ -304,13 +306,15 @@ class Login(Resource):
         content = request.form
         if current_user.is_authenticated:
             return make_response("authenticated wrong", 400)
-        if content.get('email') is not None and content.get('password') is not None:
+        if content.get('email') is not None and \
+                content.get('password') is not None:
             check_user = User.objects(email=content.get('email')).first()
             if check_user:
                 if bcrypt.check_password_hash(check_user["password"],
                                               content.get('password')):
                     session.permanent = True
-                    app.permanent_session_lifetime = datetime.timedelta(minutes=30)
+                    app.permanent_session_lifetime = \
+                        datetime.timedelta(minutes=30)
                     login_user(check_user)
                     return make_response("login successfully", 200)
                 else:
@@ -319,7 +323,6 @@ class Login(Resource):
                 return make_response("need register", 400)
         else:
             return make_response("wrong parameters", 400)
-
 
 
 @api.route('/logout')
