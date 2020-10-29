@@ -4,7 +4,7 @@ The endpoint called `endpoints` will return all available endpoints
 """
 from bson.objectid import ObjectId
 from flask import Flask, make_response, request, jsonify, \
-    flash
+    flash, session
 from flask_restx import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
 from flask_wtf import FlaskForm
@@ -203,17 +203,17 @@ class AllHousings(Resource):
         The `post()` method will create new housing detail
         """
         content = request.form
-        if content['name'] is not None and content['address'] is not None:
+        if content.get('name') is not None and content.get('address') is not None:
             housing = Housing(
-                              name=content['name'],
-                              address=content['address'],
+                              name=content.get('name'),
+                              address=content.get('address'),
                               date_posted=datetime.datetime.now(),
                               author_id=get_current_user_id(),
                               author_username=current_user.username)
             housing.save()
-            return make_response("", 200)
+            return make_response("add successfully", 200)
         else:
-            return make_response("", 404)
+            return make_response("parameter wrong", 400)
 
 
 @api.route('/housings/<housing_id>', methods=['GET', 'PUT', 'DELETE'])
@@ -229,7 +229,7 @@ class HousingItem(Resource):
         if housing_obj:
             return make_response(jsonify(housing_obj), 200)
         else:
-            return make_response("", 404)
+            return make_response("parameter wrong", 404)
 
     @login_required
     def put(self, housing_id):
@@ -239,14 +239,14 @@ class HousingItem(Resource):
         content = request.form
         housing = Housing.objects(_id=ObjectId(housing_id)).first()
         if housing.author_id != get_current_user_id():
-            return make_response("", 403)
-        if content['name'] is not None and content['address'] is not None:
-            housing.name = content['name']
-            housing.address = content['address']
+            return make_response("no authority", 400)
+        if content.get('name') is not None and content.get('address') is not None:
+            housing.name = content.get('name')
+            housing.address = content.get('address')
             housing.save()
-            return make_response("", 200)
+            return make_response("update successfully", 200)
         else:
-            return make_response("", 404)
+            return make_response("parameter wrong", 400)
 
     @login_required
     def delete(self, housing_id):
@@ -255,11 +255,10 @@ class HousingItem(Resource):
         """
         housing = Housing.objects(_id=ObjectId(housing_id)).first()
         if housing.author_id != get_current_user_id():
-            return make_response("", 403)
+            return make_response("no authority", 400)
         delete_request = {"_id": ObjectId(housing_id)}
         housingCollection.delete_one(delete_request)
-        flash('Your post has been deleted!', 'success')
-        return make_response("", 200)
+        return make_response("delete successfully", 200)
 
 
 @api.route('/register')
@@ -273,20 +272,24 @@ class Register(Resource):
         """
         content = request.form
         if current_user.is_authenticated:
-            return make_response("", 403)
-        if content['username'] is not None and content['password'] \
-                is not None and content['email'] is not None:
+            return make_response("authenticated wrong", 400)
+        if User.objects(email=content.get('email')).first() is not None:
+            return make_response("email has been registered", 400)
+        if User.objects(email=content.get('username')).first() is not None:
+            return make_response("username has been registered", 400)
+        if content.get('username') is not None and content.get('password') \
+                is not None and content.get('email') is not None:
             hashed_password = bcrypt.\
-                generate_password_hash(content['password']).decode('utf-8')
+                generate_password_hash(content.get('password')).decode('utf-8')
             user = User(
-                username=content['username'],
-                email=content['email'],
+                username=content.get('username'),
+                email=content.get('email'),
                 password=hashed_password
             )
             user.save()
-            return make_response("", 200)
+            return make_response("register successfully", 200)
         else:
-            return make_response("", 404)
+            return make_response("parameter wrong", 400)
 
 
 @api.route('/login')
@@ -300,16 +303,23 @@ class Login(Resource):
         """
         content = request.form
         if current_user.is_authenticated:
-            return make_response("", 403)
-        if content['email'] is not None and content['password'] is not None:
-            check_user = User.objects(email=content['email']).first()
+            return make_response("authenticated wrong", 400)
+        if content.get('email') is not None and content.get('password') is not None:
+            check_user = User.objects(email=content.get('email')).first()
             if check_user:
                 if bcrypt.check_password_hash(check_user["password"],
-                                              content['password']):
-                    login_user(check_user, datetime.timedelta(seconds=55))
-                    return make_response("", 200)
+                                              content.get('password')):
+                    session.permanent = True
+                    app.permanent_session_lifetime = datetime.timedelta(minutes=30)
+                    login_user(check_user)
+                    return make_response("login successfully", 200)
                 else:
-                    return make_response("", 404)
+                    return make_response("wrong password", 400)
+            else:
+                return make_response("need register", 400)
+        else:
+            return make_response("wrong parameters", 400)
+
 
 
 @api.route('/logout')
@@ -322,7 +332,7 @@ class Logout(Resource):
         The `get()` method will serve as users logout
         """
         logout_user()
-        return make_response("", 200)
+        return make_response("logout successfully", 200)
 
 
 @api.route('/account')
@@ -330,6 +340,21 @@ class Account(Resource):
     """
     This class serves to help user modify account information
     """
+    def get(self):
+        """
+        GET/  return current user details
+        """
+        query = {"username": current_user.username,
+                 "email": current_user.email}
+        user = userCollection.find_one(query)
+        if user:
+            result = {}
+            result['username'] = user.get('username')
+            result['email'] = user.get('email')
+            return make_response(jsonify(result), 200)
+        else:
+            return make_response("login timeout", 404)
+
     def put(self):
         """
         The `put()` method will modify current_user's email and password
