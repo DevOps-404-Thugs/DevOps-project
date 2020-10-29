@@ -2,9 +2,12 @@ flake8
 flask
 flask-restx
 flask_mongoengine
+flask-bcrypt
 flask_cors
 dnspython
 mongoengine
 flask-wtf
 flask-login
 coverage
+flask-objectid-converter
+email_validator
