@@ -4,7 +4,7 @@ The endpoint called `endpoints` will return all available endpoints
 """
 from bson.objectid import ObjectId
 from flask import Flask, make_response, request, jsonify, \
-    flash
+    flash, session
 from flask_restx import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
 from flask_wtf import FlaskForm
@@ -309,7 +309,9 @@ class Login(Resource):
             if check_user:
                 if bcrypt.check_password_hash(check_user["password"],
                                               content.get('password')):
-                    login_user(check_user, datetime.timedelta(seconds=55))
+                    session.permanent = True
+                    app.permanent_session_lifetime = datetime.timedelta(minutes=30)
+                    login_user(check_user)
                     return make_response("login successfully", 200)
                 else:
                     return make_response("wrong password", 400)
