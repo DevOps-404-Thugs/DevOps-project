@@ -1,0 +1,6 @@
+antd --save
+react-router-dom --save -dev
+axios
+flask-cors
+react-test-renderer
+reactstrap bootstrap@4 --save
