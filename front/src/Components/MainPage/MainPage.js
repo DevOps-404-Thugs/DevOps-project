@@ -28,7 +28,7 @@ function MainPage() {
                   <p>{house.name}</p>
                   <p>{house.address}</p>
                   <p>{house.housing_id}</p>
-                  <Link to={'/detail/'+house.housing_id}>Go to see detail</Link>
+                  <Link to={'/detail/'+house._id}>Go to see detail</Link>
         </Col>
     })
 

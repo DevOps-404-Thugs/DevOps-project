@@ -3,4 +3,5 @@ react-router-dom --save -dev
 axios
 flask-cors
 react-test-renderer
+jest-react-hooks-shallow --save -dev
 reactstrap bootstrap@4 --save
