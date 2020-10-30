@@ -27,7 +27,7 @@ function Upload() {
 		Axios.post(`http://127.0.0.1:8000/housings`, variables)
 				.then(response => {
 					console.log(response.status)
-					if(response.status == 201){
+					if(response.status == 200){
 						alert("Upload successfully!")
 					}else{
 						alert("You meet with an error!")
