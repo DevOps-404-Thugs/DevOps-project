@@ -13,7 +13,7 @@ function App() {
     <div className="App">
       <HashRouter>
         <Switch>
-          <Route exact path='/MainPage' component ={MainPage}/>
+          <Route exact path='/' component ={MainPage}/>
           <Route exact path='/detail' component ={Detail}/>
           {/* <Route exact path='/detail/:id' component ={Detail}/> */}
           <Route exact path='/upload' component ={Upload}/>
