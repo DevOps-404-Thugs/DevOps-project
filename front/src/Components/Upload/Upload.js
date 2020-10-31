@@ -18,7 +18,8 @@ function Upload() {
 		if(!nameValue || !addressValue){
 			return alert("Please fill in all fields!")
 		}
-
+		console.log(nameValue)
+		console.log(addressValue)
 		const variables = {
 			name : nameValue,
 			address : addressValue

@@ -202,7 +202,7 @@ class AllHousings(Resource):
         """
         The `post()` method will create new housing detail
         """
-        content = request.form
+        content = request.json
         if content.get('name') is not None and \
                 content.get('address') is not None:
             housing = Housing(
@@ -272,7 +272,7 @@ class Register(Resource):
         """
         The `post()` method will create new username+pwd
         """
-        content = request.form
+        content = request.json
         if current_user.is_authenticated:
             return make_response("authenticated wrong", 400)
         if User.objects(email=content.get('email')).first() is not None:
@@ -303,7 +303,7 @@ class Login(Resource):
         """
         The `post()` method will serve as users Login
         """
-        content = request.form
+        content = request.json
         if current_user.is_authenticated:
             return make_response("authenticated wrong", 400)
         if content.get('email') is not None and \
@@ -320,9 +320,9 @@ class Login(Resource):
                 else:
                     return make_response("wrong password", 400)
             else:
-                return make_response("need register", 400)
+                return make_response("need register", 401)
         else:
-            return make_response("wrong parameters", 400)
+            return make_response("wrong parameters", 402)
 
 
 @api.route('/logout')
