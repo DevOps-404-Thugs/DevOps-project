@@ -42,7 +42,7 @@ function Register() {
 					.then(response => {
 						console.log(response.status)
 						console.log(response)
-						if(response.status == 200){
+						if(response.status === 200){
 							alert("Register successfully!")
 						}else{
 							alert("You meet with an error!")
@@ -50,14 +50,14 @@ function Register() {
 					})
 					.catch(function(error){
 						console.log(error.response)
-						if(error.status == 401){
+						if(error.status === 401){
 							alert("The email has been registered!")
-						}else if(error.status == 402){
+						}else if(error.status === 402){
 							alert("This username is unavailable!")
-						}else if(error.status == 400){
+						}else if(error.status === 400){
 							alert("You have loged in already!")
 						}
-						else if(error.status == 403){
+						else if(error.status === 403){
 							alert("Parameter wrong!")
 						}
 					})

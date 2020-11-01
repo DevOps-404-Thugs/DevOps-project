@@ -37,7 +37,7 @@ function Login() {
 					.then(response => {
 						console.log(response.status)
 						console.log(response)
-						if(response.status == 200){
+						if(response.status === 200){
 							alert("Login successfully!")
 						}else{
 							alert("You meet with an error!")
@@ -45,11 +45,11 @@ function Login() {
 					})
 					.catch(function(error){
 						console.log(error.response)
-						if(error.status == 401){
+						if(error.status === 401){
 							alert("You need to register for the account!")
-						}else if(error.status == 400){
+						}else if(error.status === 400){
 							alert("Wrong Password!")
-						}else if(error.status == 402){
+						}else if(error.status === 402){
 							alert("Wrong Parameters!")
 						}
 					})
