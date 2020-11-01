@@ -10,12 +10,12 @@ prod: tests github
 tests: lint unit
 
 unit: FORCE
-	echo "we have to write some tests!"
+	echo "need to get new unit test for JSON communication"
 
 github: FORCE
 
 lint: FORCE
-	$(LINTER) $(SRC_DIR)/*.py
+	$(LINTER) $(SRC_DIR)/endpoints.py
 
 dev_env: FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
