@@ -27,8 +27,15 @@ function MainPage() {
                   <img style={{ width:'50%'}} src={`https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg`} alt={"houseImage"}/>
                   <p>{house.name}</p>
                   <p>{house.address}</p>
-                  <p>{house.housing_id}</p>
-                  <Link to={'/detail/'+house._id}>Go to see detail</Link>
+
+                  {/* <Link to={'/detail/'+house._id}>Go to see detail</Link> */}
+                  <Link to={{
+                    pathname: '/detail',
+                    state: {
+                      objectId: house._id.$oid
+                    }
+                  }}>Go to see detail</Link>
+
         </Col>
     })
 

@@ -1,4 +1,7 @@
 import React from 'react';
+import { withRouter, Redirect } from 'react-router-dom';
+import Login from '../Login/Login';
+import ReactDOM from 'react-dom';
 
 function Preview(props) {
   return (
@@ -62,12 +65,13 @@ class Description extends React.Component {
       name: "fake name",
       address: "fake address",
       viewMode: true,
-      prevState: null
+      prevState: null,
+      needLogin: false
     };
   }
 
   async componentDidMount() {
-    const response = await fetch("http://localhost:8000/housings/1").then(res => res.json());
+    const response = await fetch(`http://localhost:8000/housings/${this.props.objectId}`).then(res => res.json());
     this.setState(response);
   }
 
@@ -92,18 +96,22 @@ class Description extends React.Component {
   }
 
   async handleSave(e) {
-    const response = await fetch('http://localhost:8000/housings/1', {
+    const response = await fetch(`http://localhost:8000/housings/${this.props.objectId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(this.state)
     }).then(res => {
-      if (res.status == 204) {
+      if (res.status == 405) {
+        this.setState({
+          needLogin: true
+        })
+      } else if (res.status == 204) {
         alert('success!!!');
         this.handleButtonClick(e);
       } else {
-        alert('error!!!!');
+        alert(`error!!!! ${res.status}`);
       }
     });
   }
@@ -114,7 +122,10 @@ class Description extends React.Component {
   }
 
   render() {
-    const {name, address, viewMode} = this.state;
+    const {name, address, viewMode, needLogin} = this.state;
+    if (needLogin) {
+      return <Redirect to='/login' />
+    }
     return (
       <div className="details col-md-6">
         <>
@@ -184,7 +195,7 @@ function Container(props) {
           <div className="wrapper row">
             <>
               <Preview />
-              <Description />
+              <Description objectId={props.objectId}/>
             </>
           </div>
         </div>
@@ -196,8 +207,8 @@ function Container(props) {
 
 function Detail(props) {
   return (
-    <Container />
+    <Container objectId={props.location.state.objectId}/>
   );
 }
 
-export default Detail;
+export default withRouter(Detail);
