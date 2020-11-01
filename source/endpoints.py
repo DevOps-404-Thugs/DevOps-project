@@ -202,7 +202,7 @@ class AllHousings(Resource):
         """
         The `post()` method will create new housing detail
         """
-        content = request.form
+        content = request.json
         if content.get('name') is not None and \
                 content.get('address') is not None:
             housing = Housing(
@@ -237,7 +237,7 @@ class HousingItem(Resource):
         """
         PUT/ update housing details of housing with _id, 204 on success
         """
-        content = request.form
+        content = request.json
         housing = Housing.objects(_id=ObjectId(housing_id)).first()
         if housing.author_id != get_current_user_id():
             return make_response("no authority", 400)
@@ -272,7 +272,7 @@ class Register(Resource):
         """
         The `post()` method will create new username+pwd
         """
-        content = request.form
+        content = request.json
         if current_user.is_authenticated:
             return make_response("authenticated wrong", 400)
         if User.objects(email=content.get('email')).first() is not None:
@@ -303,7 +303,7 @@ class Login(Resource):
         """
         The `post()` method will serve as users Login
         """
-        content = request.form
+        content = request.json
         if current_user.is_authenticated:
             return make_response("authenticated wrong", 400)
         if content.get('email') is not None and \
@@ -320,9 +320,9 @@ class Login(Resource):
                 else:
                     return make_response("wrong password", 400)
             else:
-                return make_response("need register", 400)
+                return make_response("need register", 401)
         else:
-            return make_response("wrong parameters", 400)
+            return make_response("wrong parameters", 402)
 
 
 @api.route('/logout')
@@ -362,7 +362,7 @@ class Account(Resource):
         """
         The `put()` method will modify current_user's email and password
         """
-        content = request.form
+        content = request.json
         if content.get('username') is not None \
                 and content.get('email') is not None:
             check_user = {"username": content.get('username'),
@@ -406,8 +406,14 @@ def test():
     # find a cursor object
     print('current_user')
     print(type(current_user))
-    user = userCollection.find_one({"username": "david"})
-    print(type(user))
+    print(current_user.username)
+    print(get_current_user_id())
+    print('COOKIE')
+    print(session)
+    print('logged in?')
+    print(current_user.is_authenticated)
+    # user = userCollection.find_one({"username": "david"})
+    # print(type(user))
 
     return make_response("", 201)
 
