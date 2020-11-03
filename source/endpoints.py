@@ -298,12 +298,11 @@ class Register(Resource):
 class Login(Resource):
     """
     GET/ check whether a user is logged in
-    """    
+    """
     def get(self):
         if current_user.is_authenticated:
-             return make_response("a user has logged in", 200)
-        else:
-             return make_response("no current user logged in", 205)
+            return make_response("a user has logged in", 200)
+        return make_response("no current user logged in", 205)
 
     """
     POST/ sends a user log-in request
