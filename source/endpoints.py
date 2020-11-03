@@ -25,7 +25,7 @@ app.url_map.converters['objectid'] = ObjectIDConverter
 app.config['SECRET_KEY'] = '68fe6951d932820ac5d2a0b5d352d77a'
 
 api = Api(app)
-CORS(app)
+CORS(app, support_credentials=True)
 bcrypt = Bcrypt(app)
 
 app.config["MONGODB_HOST"] = DB_URI
@@ -406,36 +406,6 @@ def get_current_user_id():
                  "email": current_user.email}
         user = userCollection.find_one(query)
         return str(user.get('_id'))
-
-
-@app.route("/test")
-def test():
-    """
-    developer test route
-    """
-    # find a cursor object
-    print('current_user')
-    print(type(current_user))
-    print(current_user.username)
-    print(get_current_user_id())
-    print('COOKIE')
-    print(session)
-    print('logged in?')
-    print(current_user.is_authenticated)
-    # user = userCollection.find_one({"username": "david"})
-    # print(type(user))
-
-    return make_response("", 201)
-
-
-def get_all_housings():
-    """
-    retrieve all housings for main page
-    """
-    housings = []
-    for housing in housingCollection.find():
-        housings.append(housing)
-    return housings
 
 
 if __name__ == '__main__':
