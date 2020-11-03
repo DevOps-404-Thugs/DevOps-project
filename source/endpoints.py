@@ -276,9 +276,9 @@ class Register(Resource):
         if current_user.is_authenticated:
             return make_response("authenticated wrong", 400)
         if User.objects(email=content.get('email')).first() is not None:
-            return make_response("email has been registered", 400)
+            return make_response("email has been registered", 401)
         if User.objects(email=content.get('username')).first() is not None:
-            return make_response("username has been registered", 400)
+            return make_response("username has been registered", 402)
         if content.get('username') is not None and content.get('password') \
                 is not None and content.get('email') is not None:
             hashed_password = bcrypt.\

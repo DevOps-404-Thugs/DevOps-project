@@ -37,7 +37,7 @@ function Upload() {
 					})
 					.catch(function(error){
 						console.log(error.response)
-						if(error.status === 400){
+						if(error.response.status === 400){
 							alert("Parameter wrong!")
 						}
 					})
