@@ -232,7 +232,7 @@ class HousingItem(Resource):
         else:
             return make_response("parameter wrong", 404)
 
-    @login_required
+    # @login_required
     def put(self, housing_id):
         """
         PUT/ update housing details of housing with _id, 204 on success
@@ -240,7 +240,7 @@ class HousingItem(Resource):
         content = request.json
         housing = Housing.objects(_id=ObjectId(housing_id)).first()
         if housing.author_id != get_current_user_id():
-            return make_response("no authority", 400)
+            return make_response("no authority", 401)
         if content.get('name') is not None and \
                 content.get('address') is not None:
             housing.name = content.get('name')
@@ -297,7 +297,16 @@ class Register(Resource):
 @api.route('/login')
 class Login(Resource):
     """
-    This class will serve as users Login
+    GET/ check whether a user is logged in
+    """    
+    def get(self):
+        if current_user.is_authenticated:
+             return make_response("a user has logged in", 200)
+        else:
+             return make_response("no current user logged in", 205)
+
+    """
+    POST/ sends a user log-in request
     """
     def post(self):
         """
@@ -343,6 +352,7 @@ class Account(Resource):
     """
     This class serves to help user modify account information
     """
+    @login_required
     def get(self):
         """
         GET/  return current user details
@@ -358,6 +368,7 @@ class Account(Resource):
         else:
             return make_response("login timeout", 404)
 
+    @login_required
     def put(self):
         """
         The `put()` method will modify current_user's email and password
