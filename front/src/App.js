@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { HashRouter, Route, Switch } from "react-router-dom";
 
+import NavBar from './Components/NavBar/NavBar';
 import MainPage from './Components/MainPage/MainPage';
 import Detail from './Components/Detail/Detail';
 import Upload from './Components/Upload/Upload';
@@ -12,6 +13,7 @@ function App() {
   return (
     <div className="App">
       <HashRouter>
+        <NavBar />
         <Switch>
           <Route exact path='/' component ={MainPage}/>
           <Route exact path='/detail' component ={Detail}/>

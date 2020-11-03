@@ -26,40 +26,40 @@ function Upload() {
 		}
 		
 		Axios.post(`http://127.0.0.1:8000/housings`, variables)
-				.then(response => {
-					console.log(response.status)
-					if(response.status == 200){
-						alert("Upload successfully!")
-					}else{
-						alert("You meet with an error!")
-					}
-				})
+					.then(response => {
+						console.log(response.status)
+						console.log(response)
+						if(response.status === 200){
+							alert("Upload successfully!")
+						}else{
+							alert("You meet with an error!")
+						}
+					})
+					.catch(function(error){
+						console.log(error.response)
+						if(error.status === 400){
+							alert("Parameter wrong!")
+						}
+					})
 	}
 	
 
 	return(
 		<div>
-			<div style={{ textAlign: 'center' }}>
-                <h2>  Upload a New House </h2>
-      </div>
+			<div style={{ width: '75%', margin: '3rem auto' }}>
+        <form>
+					<div class="form-group">
+						<label>House Name</label>
+						<input type="text" onChange={onNameChange} class="form-control" id="email-input" placeholder="Input your email address here"></input>
+					</div>
+					<div class="form-group">
+						<label>Address</label>
+						<input type="text" onChange={onAddressChange} class="form-control" id="password-input" placeholder="Input your password here"></input>
+					</div>
 
-			<form onSubmit={onSubmit}>
-				<label>Name</label>
-				<input onChange={onNameChange}></input>
-
-				<br/>
-				<br/>
-
-				<label>Address</label>
-				<input onChange={onAddressChange}></input>
-
-				<br/>
-				<br/>
-
-				<button onClick={onSubmit}>Submit</button>
-
-			</form>
-
+					<button type="submit" class="btn btn-primary" onClick={onSubmit} >Submit</button>
+        </form>
+			</div>
 		</div>
 	)
 

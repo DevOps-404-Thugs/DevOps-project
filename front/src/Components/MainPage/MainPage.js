@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
 import {Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
+// import NavBar from '../NavBar/NavBar.js';
 import "./MainPage.css"
 
 
@@ -14,7 +15,7 @@ function MainPage() {
 			Axios.get(`http://127.0.0.1:8000/housings`)
 				.then(response => {
           console.log(response.data);
-          console.log(response.status);
+          console.log("housingsGET:"+response.status);
 					setHouses(response.data);
 				})
 		},[]);
@@ -42,6 +43,7 @@ function MainPage() {
 
     return (
         <div style={{ width: '75%', margin: '3rem auto' }}>
+          {/* <NavBar /> */}
             <div style={{ textAlign: 'center' }}>
                 <h2>  Find Your Future Home in iHomie </h2>
             </div>
