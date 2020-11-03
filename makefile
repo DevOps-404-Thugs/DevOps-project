@@ -10,7 +10,7 @@ prod: tests github
 tests: lint unit
 
 unit: FORCE
-	echo "need to get new unit test for JSON communication"
+	cd source; coverage run test.py; coverage report endpoints.py
 
 github: FORCE
 

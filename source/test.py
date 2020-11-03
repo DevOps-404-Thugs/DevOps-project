@@ -1,38 +1,6 @@
-import unittest
 import json
-from source.endpoints import app
-
-
-class HelloWorldTest(unittest.TestCase):
-    def setUp(self):
-        self.app = app
-        app.config['TESTING'] = True
-        self.client = app.test_client()
-
-    def test_hello_world(self):
-        # # test the method hello world
-        response = self.client.get("/hello", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertIn("hello", resp)
-        hello = resp.get("hello")
-        self.assertEqual(hello, "world")
-
-
-class EndpointsTest(unittest.TestCase):
-    def setUp(self):
-        self.app = app
-        app.config['TESTING'] = True
-        self.client = app.test_client()
-
-    def test_endpoints(self):
-        # test the method getting endpoints
-        response = self.client.get("/endpoints", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertIn("end", resp)
-        end = resp.get("end")
-        self.assertEqual(end, "point")
+import unittest
+from endpoints import app
 
 
 class HousingsTest(unittest.TestCase):
@@ -40,48 +8,97 @@ class HousingsTest(unittest.TestCase):
         self.app = app
         app.config['TESTING'] = True
         self.client = app.test_client()
+        info = {"username": "betty", "password": "123456",
+                "email": "zbn@ihomie.com"}
+        self.client.post("/login", json=info)
 
-    def test_housings(self):
-        # test the method getting all housing info
-        response = self.client.get("/housings", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertIn("1", resp)
-        info = resp.get("1")
-        self.assertEqual(info[1], "www.housing.com")
+    def tearDown(self):
+        self.client.get("/logout")
+
+    def test_1_get_all_housings(self):
+        response = self.client.get("/housings")
+        self.assertEqual(response.status_code, 200)
+
+    def test_2_post_housing_info(self):
+        info = {'name': 'Avalon FG',
+                'address': '343 Gold Street'}
+        response = self.client.post("/housings", json=info)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_3_get_housing_item(self):
+        response = self.client.get("/housings")
+        resp_json = json.loads(response.data)
+        housing_id = resp_json[len(resp_json) - 1]['_id']['$oid']
+        response = self.client.get("/housings/" + housing_id)
+        self.assertEqual(response.status_code, 200)
+
+    def test_4_update_housing_item(self):
+        response = self.client.get("/housings")
+        resp_json = json.loads(response.data)
+        housing_id = resp_json[len(resp_json) - 1]['_id']['$oid']
+        info = {'name': 'Avalon FG',
+                'address': '343 Gold Street'}
+        response = self.client.put("/housings/" + housing_id, json=info)
+        self.assertEqual(response.status_code, 200)
+
+    def test_5_delete_housing_item(self):
+        response = self.client.get("/housings")
+        resp_json = json.loads(response.data)
+        housing_id = resp_json[len(resp_json) - 1]['_id']['$oid']
+        response = self.client.delete("/housings/" + housing_id)
+        self.assertEqual(response.status_code, 200)
 
 
-class HousingItemTest(unittest.TestCase):
+class AccountTest(unittest.TestCase):
+    def setUp(self):
+        self.app = app
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+        info = {"username": "betty", "password": "123456",
+                "email": "zbn@ihomie.com"}
+        self.client.post("/login", json=info)
+
+    def tearDown(self):
+        self.client.get("/logout")
+
+    def test_1_get_account_info(self):
+        response = self.client.get("/account")
+        self.assertEqual(response.status_code, 200)
+
+    def test_2_update_account_info(self):
+        info = {"username": "betty-ut",
+                "email": "zbn@ihomie.com"}
+        response = self.client.get("/account", json=info)
+        self.assertEqual(response.status_code, 200)
+
+        info = {"username": "betty",
+                "email": "zbn@ihomie.com"}
+        response = self.client.get("/account", json=info)
+        self.assertEqual(response.status_code, 200)
+
+
+class LogTest(unittest.TestCase):
     def setUp(self):
         self.app = app
         app.config['TESTING'] = True
         self.client = app.test_client()
 
-    def test_housing_item(self):
-        # test the method getting the details of housing
-        response = self.client.get("/housings/1", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertEqual(resp[0], "33 Bond Street")
+    def test_login_status(self):
+        response = self.client.get("/login")
+        self.assertEqual(response.status_code, 205)
 
-    def test_housing_link(self):
-        pass
-
-
-class LoginTest(unittest.TestCase):
-    def setUp(self):
-        self.app = app
-        app.config['TESTING'] = True
-        self.client = app.test_client()
-
-    def test_login(self):
+    def test_1_login(self):
         # test the method loggin in
-        response = self.client.get("/login",
-                                   data={'username': 'tommy',
-                                         'password': '123'})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertEqual(resp, "thommy")
+        info = {"username": "betty", "password": "123456",
+                "email": "zbn@ihomie.com"}
+        response = self.client.post("/login", json=info)
+        self.assertEqual(response.status_code, 200)
+
+    def test_2_logout(self):
+        # test the method loggin in
+        response = self.client.get("/logout")
+        self.assertEqual(response.status_code, 200)
 
 
 class SignupTest(unittest.TestCase):
@@ -92,82 +109,11 @@ class SignupTest(unittest.TestCase):
 
     def test_signup(self):
         # test the method signing up
-        response = self.client.put("/signup",
-                                   data={'username': 'betty',
-                                         'password': '456'})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertEqual(resp, "success")
-
-        # test whether sign up is a success
-        response = self.client.get("/login",
-                                   data={'username': 'betty',
-                                         'password': '456'})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertEqual(resp, "betty")
-
-
-class AddHouseInfoTest(unittest.TestCase):
-    def setUp(self):
-        self.app = app
-        app.config['TESTING'] = True
-        self.client = app.test_client()
-
-    def test_add_house_info(self):
-        # test the method adding house information
-        response = self.client.post(
-            "/add/343 Gold Street+www.housing.com", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertEqual(resp, "success")
-
-        # test whether the adding is a success
-        response = self.client.get("/housings", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        info = resp.get(str(len(resp)))
-        self.assertEqual(info[0], "343 Gold Street")
-
-
-class UpdateHouseInfo(unittest.TestCase):
-    def setUp(self):
-        self.app = app
-        app.config['TESTING'] = True
-        self.client = app.test_client()
-
-    def test_update_house_info(self):
-        # test the method updating house information
-        response = self.client.post("/update/1+343 Gold Street", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertEqual(resp, "success")
-
-        # test whether the updating is a success
-        response = self.client.get("/housings/1", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertEqual(resp[0], "343 Gold Street")
-
-
-class DeleteHouseInfo(unittest.TestCase):
-    def setUp(self):
-        self.app = app
-        app.config['TESTING'] = True
-        self.client = app.test_client()
-
-    def test_delete_house_info(self):
-        # test the method deleting house information
-        response = self.client.delete("/delete/2", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertEqual(resp, "success")
-
-        # test whether the deleting is a success
-        response = self.client.get("/housings/2", data={})
-        resp_json = response.data
-        resp = json.loads(resp_json)
-        self.assertIsNone(resp)
+        info = {"username": "betty", "password": "123456",
+                "email": "zbn@ihomie.com"}
+        response = self.client.post("/register",
+                                    json=info)
+        self.assertEqual(response.status_code, 400)
 
 
 if __name__ == '__main__':
