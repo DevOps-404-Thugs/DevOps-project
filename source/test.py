@@ -23,7 +23,6 @@ class HousingsTest(unittest.TestCase):
         info = {'name': 'Avalon FG',
                 'address': '343 Gold Street'}
         response = self.client.post("/housings", json=info)
-
         self.assertEqual(response.status_code, 200)
 
     def test_3_get_housing_item(self):
@@ -69,12 +68,12 @@ class AccountTest(unittest.TestCase):
     def test_2_update_account_info(self):
         info = {"username": "betty-ut",
                 "email": "zbn@ihomie.com"}
-        response = self.client.get("/account", json=info)
+        response = self.client.put("/account", json=info)
         self.assertEqual(response.status_code, 200)
 
         info = {"username": "betty",
                 "email": "zbn@ihomie.com"}
-        response = self.client.get("/account", json=info)
+        response = self.client.put("/account", json=info)
         self.assertEqual(response.status_code, 200)
 
 
@@ -88,14 +87,27 @@ class LogTest(unittest.TestCase):
         response = self.client.get("/login")
         self.assertEqual(response.status_code, 205)
 
-    def test_1_login(self):
+    def test_1_login_wrong_password(self):
+        # test the method loggin in
+        info = {"username": "betty", "password": "wrong_password",
+                "email": "zbn@ihomie.com"}
+        response = self.client.post("/login", json=info)
+        self.assertEqual(response.status_code, 400)
+
+    def test_2_login_wrong_parameters(self):
+        # test the method loggin in
+        info = {"username": "not_registered", "password": "wrong_password"}
+        response = self.client.post("/login", json=info)
+        self.assertEqual(response.status_code, 402)
+
+    def test_3_login(self):
         # test the method loggin in
         info = {"username": "betty", "password": "123456",
                 "email": "zbn@ihomie.com"}
         response = self.client.post("/login", json=info)
         self.assertEqual(response.status_code, 200)
 
-    def test_2_logout(self):
+    def test_4_logout(self):
         # test the method loggin in
         response = self.client.get("/logout")
         self.assertEqual(response.status_code, 200)
@@ -114,6 +126,18 @@ class SignupTest(unittest.TestCase):
         response = self.client.post("/register",
                                     json=info)
         self.assertEqual(response.status_code, 400)
+
+
+class DBTest(unittest.TestCase):
+    def setUp(self):
+        self.app = app
+        app.config['TESTING'] = True
+        self.client = app.test_client()
+
+    def test_db(self):
+        # test the method signing up
+        response = self.client.post("/db_populate")
+        self.assertEqual(response.status_code, 201)
 
 
 if __name__ == '__main__':
