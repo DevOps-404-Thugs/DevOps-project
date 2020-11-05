@@ -232,7 +232,7 @@ class HousingItem(Resource):
         else:
             return make_response("parameter wrong", 404)
 
-    # @login_required
+    @login_required
     def put(self, housing_id):
         """
         PUT/ update housing details of housing with _id, 204 on success

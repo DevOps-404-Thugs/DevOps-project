@@ -8,8 +8,9 @@ import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import Alert from 'react-bootstrap/Alert'
 
-class Description extends React.Component {
+export class Description extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,12 +18,16 @@ class Description extends React.Component {
       address: "",
       prevState: null,
       needLogin: false,
-      show: false
+      show: false,
+      showSuccessBar: false,
+      showFailureBar: false,
+      errorCode: 0,
+      goHomePage: false
     };
   }
 
   async componentDidMount() {
-    const response = await fetch(`http://localhost:8000/housings/${this.props.objectId}`).then(res => res.json());
+    const response = await fetch(`http://127.0.0.1:8000/housings/${this.props.objectId}`).then(res => res.json());
     this.setState(response);
   }
 
@@ -41,21 +46,50 @@ class Description extends React.Component {
   }
 
   async handleSave(e) {
-    const response = await fetch(`http://localhost:8000/housings/${this.props.objectId}`, {
+    const response = await fetch(`http://127.0.0.1:8000/housings/${this.props.objectId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify(this.state)
     }).then(res => {
       if (res.status == 405) {
         this.setState({
           needLogin: true
         })
-      } else if (res.status == 204) {
-        alert('success!!!');
+      } else if (res.status == 200) {
+        this.setState({show: false, showSuccessBar: true});
       } else {
-        alert(`error!!!! ${res.status}`);
+        this.state.prevState.showFailureBar = true;
+        this.state.prevState.errorCode = res.status;
+        this.setState(this.state.prevState);
+      }
+    });
+  }
+
+  async handleDelete(e) {
+    const response = await fetch(`http://127.0.0.1:8000/housings/${this.props.objectId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    }).then(res => {
+      if (res.status == 405) {
+        this.setState({
+          needLogin: true
+        });
+      } else if (res.status == 200) {
+        this.setState({
+          goHomePage: true
+        });
+      } else {
+        this.setState({
+          show: false,
+          showFailureBar: true,
+          errorCode: res.status
+        })
       }
     });
   }
@@ -70,13 +104,33 @@ class Description extends React.Component {
     this.setState({show: false});
   }
 
+  handleCloseSuccessBar(e) {
+    this.setState({showSuccessBar: false});
+  }
+
+  handleCloseFailureBar(e) {
+    this.setState({showFailureBar: false});
+  }
+
   render() {
-    const {name, address, needLogin, show} = this.state;
+    const {name, address, needLogin, show, showSuccessBar, 
+      showFailureBar, errorCode, goHomePage} = this.state;
     if (needLogin) {
       return <Redirect to='/login' />
     }
+    if (goHomePage) {
+      return <Redirect to='/' />
+    }
     return (
       <>
+        <Alert show={showSuccessBar} variant="success" 
+            onClose={this.handleCloseSuccessBar.bind(this)} dismissible>
+          Modified information successfully!
+        </Alert>
+        <Alert show={showFailureBar} variant="danger" 
+            onClose={this.handleCloseFailureBar.bind(this)} dismissible>
+          Failed to modify information, error response code: {errorCode}
+        </Alert>
         <Modal show={show} onHide={this.handleClose.bind(this)}>
           <Modal.Header closeButton>
             <Modal.Title>Modify house information</Modal.Title>
@@ -118,7 +172,7 @@ class Description extends React.Component {
                     A property description is the written portion of a real estate listing that describes the real estate for sale or lease. Nowadays, most buyers begin their property search online. Therefore, real estate descriptions are your best chance to sway buyers and sellers.
                   </Card.Text>
                   <Button variant="primary" onClick={this.handleModify.bind(this)}>Modify</Button>
-                  <Button variant="primary" style={{ margin: '1px'}}>Delete</Button>
+                  <Button variant="primary" onClick={this.handleDelete.bind(this)} style={{ margin: '1px'}}>Delete</Button>
                 </Card.Body>
               </Card>
             </Col>
