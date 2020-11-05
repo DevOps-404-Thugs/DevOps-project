@@ -1,12 +1,7 @@
 source/__pycache__/db.cpython-37.pyc
 source/__pycache__/endpoints.cpython-37.pyc
 source/.DS_Store
-<<<<<<< HEAD
-=======
 source/.coverage
-=======
-
->>>>>>> origin/master
 source/__pycache__/
 front/node_modules/
 front/package-lock.json
