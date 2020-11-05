@@ -21,6 +21,8 @@ lint: FORCE
 
 dev_env: FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
+	npm install
+	npm install -r $(REQ_DIR)/requirements-npm.txt
 
 docs: FORCE
 	cd source; make docs

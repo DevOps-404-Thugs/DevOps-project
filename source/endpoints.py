@@ -25,7 +25,7 @@ app.url_map.converters['objectid'] = ObjectIDConverter
 app.config['SECRET_KEY'] = '68fe6951d932820ac5d2a0b5d352d77a'
 
 api = Api(app)
-CORS(app)
+CORS(app, supports_credentials=True)
 bcrypt = Bcrypt(app)
 
 app.config["MONGODB_HOST"] = DB_URI
@@ -202,7 +202,7 @@ class AllHousings(Resource):
         """
         The `post()` method will create new housing detail
         """
-        content = request.form
+        content = request.json
         if content.get('name') is not None and \
                 content.get('address') is not None:
             housing = Housing(
@@ -272,13 +272,13 @@ class Register(Resource):
         """
         The `post()` method will create new username+pwd
         """
-        content = request.form
+        content = request.json
         if current_user.is_authenticated:
             return make_response("authenticated wrong", 400)
         if User.objects(email=content.get('email')).first() is not None:
-            return make_response("email has been registered", 400)
+            return make_response("email has been registered", 401)
         if User.objects(email=content.get('username')).first() is not None:
-            return make_response("username has been registered", 400)
+            return make_response("username has been registered", 402)
         if content.get('username') is not None and content.get('password') \
                 is not None and content.get('email') is not None:
             hashed_password = bcrypt.\
@@ -297,13 +297,21 @@ class Register(Resource):
 @api.route('/login')
 class Login(Resource):
     """
+    GET/ check whether a user is logged in
+    """
+    def get(self):
+        if current_user.is_authenticated:
+            return make_response("a user has logged in", 200)
+        return make_response("no current user logged in", 205)
+
+    """
     This class will serve as users Login
     """
     def post(self):
         """
         The `post()` method will serve as users Login
         """
-        content = request.form
+        content = request.json
         if current_user.is_authenticated:
             return make_response("authenticated wrong", 400)
         if content.get('email') is not None and \
@@ -320,9 +328,9 @@ class Login(Resource):
                 else:
                     return make_response("wrong password", 400)
             else:
-                return make_response("need register", 400)
+                return make_response("need register", 401)
         else:
-            return make_response("wrong parameters", 400)
+            return make_response("wrong parameters", 402)
 
 
 @api.route('/logout')
@@ -330,6 +338,7 @@ class Logout(Resource):
     """
     This class will serve as users logout
     """
+    @login_required
     def get(self):
         """
         The `get()` method will serve as users logout
