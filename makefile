@@ -5,7 +5,7 @@ DOCFILES = $(shell ls *.py | sed -e 's/.py/.html/')
 
 FORCE:
 
-prod: tests github
+prod: tests
 
 tests: lint unit
 
@@ -17,7 +17,7 @@ github: FORCE
 	git push origin master
 
 lint: FORCE
-	$(LINTER) $(SRC_DIR)/*.py
+	$(LINTER) $(SRC_DIR)/endpoints.py $(SRC_DIR)/test.py
 
 dev_env: FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
