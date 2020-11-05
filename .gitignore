@@ -3,3 +3,4 @@ source/__pycache__/endpoints.cpython-37.pyc
 source/.DS_Store
 source/__pycache__/
 front/node_modules/
+front/package-lock.json
