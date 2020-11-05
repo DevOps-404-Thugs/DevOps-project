@@ -25,7 +25,7 @@ app.url_map.converters['objectid'] = ObjectIDConverter
 app.config['SECRET_KEY'] = '68fe6951d932820ac5d2a0b5d352d77a'
 
 api = Api(app)
-CORS(app)
+CORS(app, supports_credentials=True)
 bcrypt = Bcrypt(app)
 
 app.config["MONGODB_HOST"] = DB_URI
@@ -297,6 +297,14 @@ class Register(Resource):
 @api.route('/login')
 class Login(Resource):
     """
+    GET/ check whether a user is logged in
+    """
+    def get(self):
+        if current_user.is_authenticated:
+            return make_response("a user has logged in", 200)
+        return make_response("no current user logged in", 205)
+
+    """
     This class will serve as users Login
     """
     def post(self):
@@ -330,6 +338,7 @@ class Logout(Resource):
     """
     This class will serve as users logout
     """
+    @login_required
     def get(self):
         """
         The `get()` method will serve as users logout
