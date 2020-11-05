@@ -53,11 +53,15 @@ function NavBar() {
 			<div class="menu_container">
 				<div class="menu_right">
 					{loginState === 0?
-						<Link class="link" to={'/login'} visible={!loginState}>Login</Link>
+						<Link class="link" to={'/login'}>Login</Link>
 						: 
-						<button class="btn btn-primary" visible={loginState} onClick={onLogout}>log out</button> 
+						<button class="btn btn-primary" onClick={onLogout}>log out</button> 
 					}
 						
+				</div>
+				
+				<div class="menu_left">
+					<Link class="link" to={'/'}>Home</Link>
 				</div>
 			</div>
 			{/* <p>{loginState}</p> */}
