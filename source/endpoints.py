@@ -25,7 +25,7 @@ app.url_map.converters['objectid'] = ObjectIDConverter
 app.config['SECRET_KEY'] = '68fe6951d932820ac5d2a0b5d352d77a'
 
 api = Api(app)
-CORS(app, support_credentials=True)
+CORS(app, supports_credentials=True)
 bcrypt = Bcrypt(app)
 
 app.config["MONGODB_HOST"] = DB_URI
@@ -232,15 +232,15 @@ class HousingItem(Resource):
         else:
             return make_response("parameter wrong", 404)
 
-    # @login_required
+    @login_required
     def put(self, housing_id):
         """
         PUT/ update housing details of housing with _id, 204 on success
         """
-        content = request.json
+        content = request.form
         housing = Housing.objects(_id=ObjectId(housing_id)).first()
         if housing.author_id != get_current_user_id():
-            return make_response("no authority", 401)
+            return make_response("no authority", 400)
         if content.get('name') is not None and \
                 content.get('address') is not None:
             housing.name = content.get('name')
@@ -276,9 +276,9 @@ class Register(Resource):
         if current_user.is_authenticated:
             return make_response("authenticated wrong", 400)
         if User.objects(email=content.get('email')).first() is not None:
-            return make_response("email has been registered", 400)
+            return make_response("email has been registered", 401)
         if User.objects(email=content.get('username')).first() is not None:
-            return make_response("username has been registered", 400)
+            return make_response("username has been registered", 402)
         if content.get('username') is not None and content.get('password') \
                 is not None and content.get('email') is not None:
             hashed_password = bcrypt.\
@@ -305,7 +305,7 @@ class Login(Resource):
         return make_response("no current user logged in", 205)
 
     """
-    POST/ sends a user log-in request
+    This class will serve as users Login
     """
     def post(self):
         """
@@ -338,6 +338,7 @@ class Logout(Resource):
     """
     This class will serve as users logout
     """
+    @login_required
     def get(self):
         """
         The `get()` method will serve as users logout
@@ -351,7 +352,6 @@ class Account(Resource):
     """
     This class serves to help user modify account information
     """
-    @login_required
     def get(self):
         """
         GET/  return current user details
@@ -367,12 +367,11 @@ class Account(Resource):
         else:
             return make_response("login timeout", 404)
 
-    @login_required
     def put(self):
         """
         The `put()` method will modify current_user's email and password
         """
-        content = request.json
+        content = request.form
         if content.get('username') is not None \
                 and content.get('email') is not None:
             check_user = {"username": content.get('username'),
@@ -406,6 +405,30 @@ def get_current_user_id():
                  "email": current_user.email}
         user = userCollection.find_one(query)
         return str(user.get('_id'))
+
+
+@app.route("/test")
+def test():
+    """
+    developer test route
+    """
+    # find a cursor object
+    print('current_user')
+    print(type(current_user))
+    user = userCollection.find_one({"username": "david"})
+    print(type(user))
+
+    return make_response("", 201)
+
+
+def get_all_housings():
+    """
+    retrieve all housings for main page
+    """
+    housings = []
+    for housing in housingCollection.find():
+        housings.append(housing)
+    return housings
 
 
 if __name__ == '__main__':
