@@ -2,6 +2,7 @@
 source/__pycache__/db.cpython-37.pyc
 source/__pycache__/endpoints.cpython-37.pyc
 source/.DS_Store
+source/.coverage
 =======
 
 source/__pycache__/

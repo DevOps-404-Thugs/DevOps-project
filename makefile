@@ -5,7 +5,7 @@ DOCFILES = $(shell ls *.py | sed -e 's/.py/.html/')
 
 FORCE:
 
-prod: tests
+prod: tests github
 
 tests: lint unit
 
