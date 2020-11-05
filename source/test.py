@@ -125,7 +125,7 @@ class SignupTest(unittest.TestCase):
                 "email": "zbn@ihomie.com"}
         response = self.client.post("/register",
                                     json=info)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 401)
 
 
 class DBTest(unittest.TestCase):
