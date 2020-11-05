@@ -232,15 +232,15 @@ class HousingItem(Resource):
         else:
             return make_response("parameter wrong", 404)
 
-    @login_required
+    # @login_required
     def put(self, housing_id):
         """
         PUT/ update housing details of housing with _id, 204 on success
         """
-        content = request.form
+        content = request.json
         housing = Housing.objects(_id=ObjectId(housing_id)).first()
         if housing.author_id != get_current_user_id():
-            return make_response("no authority", 400)
+            return make_response("no authority", 401)
         if content.get('name') is not None and \
                 content.get('address') is not None:
             housing.name = content.get('name')
@@ -297,16 +297,16 @@ class Register(Resource):
 @api.route('/login')
 class Login(Resource):
     """
-    GET/ check whether a user is logged in
+    This class will serve as users login
     """
     def get(self):
+        """
+        GET/ check whether a user is logged in
+        """
         if current_user.is_authenticated:
             return make_response("a user has logged in", 200)
         return make_response("no current user logged in", 205)
 
-    """
-    This class will serve as users Login
-    """
     def post(self):
         """
         The `post()` method will serve as users Login
@@ -338,7 +338,6 @@ class Logout(Resource):
     """
     This class will serve as users logout
     """
-    @login_required
     def get(self):
         """
         The `get()` method will serve as users logout
@@ -352,6 +351,7 @@ class Account(Resource):
     """
     This class serves to help user modify account information
     """
+    @login_required
     def get(self):
         """
         GET/  return current user details
@@ -367,11 +367,12 @@ class Account(Resource):
         else:
             return make_response("login timeout", 404)
 
+    @login_required
     def put(self):
         """
         The `put()` method will modify current_user's email and password
         """
-        content = request.form
+        content = request.json
         if content.get('username') is not None \
                 and content.get('email') is not None:
             check_user = {"username": content.get('username'),
@@ -405,30 +406,6 @@ def get_current_user_id():
                  "email": current_user.email}
         user = userCollection.find_one(query)
         return str(user.get('_id'))
-
-
-@app.route("/test")
-def test():
-    """
-    developer test route
-    """
-    # find a cursor object
-    print('current_user')
-    print(type(current_user))
-    user = userCollection.find_one({"username": "david"})
-    print(type(user))
-
-    return make_response("", 201)
-
-
-def get_all_housings():
-    """
-    retrieve all housings for main page
-    """
-    housings = []
-    for housing in housingCollection.find():
-        housings.append(housing)
-    return housings
 
 
 if __name__ == '__main__':
