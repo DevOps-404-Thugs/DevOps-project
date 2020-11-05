@@ -26,3 +26,5 @@ dev_env: FORCE
 
 docs: FORCE
 	cd source; make docs
+
+travis: tests
