@@ -11,3 +11,4 @@ flask-login
 coverage
 flask-objectid-converter
 email_validator
+gunicorn

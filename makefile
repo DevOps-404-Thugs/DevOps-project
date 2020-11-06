@@ -23,7 +23,7 @@ lint: FORCE
 dev_env: FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
 	cd $(FRONT_END); npm install
-	cat $(FRONT_END)/requirements-npm.txt | xargs npm install -g
+	cd $(FRONT_END); cat requirements-npm.txt | xargs npm install -g
 
 docs: FORCE
 	cd source; make docs
