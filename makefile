@@ -1,11 +1,12 @@
 LINTER = flake8
 SRC_DIR = source
 REQ_DIR = requirements
+FRONT_END = front
 DOCFILES = $(shell ls *.py | sed -e 's/.py/.html/')
 
 FORCE:
 
-prod: tests github
+prod: tests
 
 tests: lint unit
 
@@ -21,8 +22,8 @@ lint: FORCE
 
 dev_env: FORCE
 	pip3 install -r $(REQ_DIR)/requirements-dev.txt
-	npm install
-	npm install -r $(REQ_DIR)/requirements-npm.txt
+	cd $(FRONT_END); npm install
+	cat $(FRONT_END)/requirements-npm.txt | xargs npm install -g
 
 docs: FORCE
 	cd source; make docs
