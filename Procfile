@@ -1,1 +1,1 @@
-web: gunicorn app:app -b "http://dry-river-74760.herokuapp.com/"
+web: gunicorn app:app -b 0.0.0.0:$PORT
