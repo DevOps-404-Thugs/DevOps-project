@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn app:app -b "http://dry-river-74760.herokuapp.com/"
