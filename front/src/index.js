@@ -10,27 +10,27 @@ import 'bootstrap/dist/css/bootstrap.css';
 // import FormControl from 'react-bootstrap/FormControl';
 // import Button from 'react-bootstrap/Button';
 
-ReactDOM.render(
-  <React.StrictMode>
-    {/* <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">iHomie</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="/MainPage">Home</Nav.Link>
-            <Nav.Link href="/MainPage#/upload">Upload</Nav.Link>
-            <Nav.Link href="/MainPage#/register">Register</Nav.Link>
-            <Nav.Link href="/MainPage#/login">Login</Nav.Link>
-          </Nav>
-          <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-success">Search</Button>
-          </Form>
-        </Navbar.Collapse>
-      </Navbar> */}
-  </React.StrictMode>,
-  document.getElementById('navbar')
-);
+// ReactDOM.render(
+//   <React.StrictMode>
+//     {/* <Navbar bg="light" expand="lg">
+//         <Navbar.Brand href="#home">iHomie</Navbar.Brand>
+//         <Navbar.Toggle aria-controls="basic-navbar-nav" />
+//         <Navbar.Collapse id="basic-navbar-nav">
+//           <Nav className="mr-auto">
+//             <Nav.Link href="/MainPage">Home</Nav.Link>
+//             <Nav.Link href="/MainPage#/upload">Upload</Nav.Link>
+//             <Nav.Link href="/MainPage#/register">Register</Nav.Link>
+//             <Nav.Link href="/MainPage#/login">Login</Nav.Link>
+//           </Nav>
+//           <Form inline>
+//             <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+//             <Button variant="outline-success">Search</Button>
+//           </Form>
+//         </Navbar.Collapse>
+//       </Navbar> */}
+//   </React.StrictMode>,
+//   // document.getElementById('navbar')
+// );
 
 ReactDOM.render(
   <React.StrictMode>

@@ -31,16 +31,11 @@ function Upload() {
 						console.log(response)
 						if(response.status === 200){
 							alert("Upload successfully!")
-						}else{
-							alert("You meet with an error!")
+						}else if(response.status === 205){
+							alert("You need to sign in first!")
 						}
 					})
-					.catch(function(error){
-						console.log(error.response)
-						if(error.response.status === 400){
-							alert("Parameter wrong!")
-						}
-					})
+					
 	}
 	
 
