@@ -21,15 +21,15 @@ function NavBar() {
 				//console.log("loginState after loginGET205:" + loginState);
 			}
 		})
-		.catch(function(error){
-			console.log("loginGET:"+error.response.status)
-			console.log(error.response)
+		// .catch(function(error){
+		// 	console.log("loginGET:"+error.response.status)
+		// 	console.log(error.response)
 			
-		})
+		// })
 
-		
+		console.log("loginState:" + loginState);
 	},[]);
-	console.log("loginState:" + loginState);
+	
 
 	const onLogout = (event) => {
 		Axios.get(`http://127.0.0.1:8000/logout`, {withCredentials: true})
@@ -41,11 +41,11 @@ function NavBar() {
 				//console.log("loginState after logout200:" + loginState);
 			}
 		})
-		.catch(function(error){
-			console.log("logoutGET:"+error.response.status)
-			console.log(error.response)
-			//console.log("loginState:" + loginState);
-		})
+		// .catch(function(error){
+		// 	console.log("logoutGET:"+error.response.status)
+		// 	console.log(error.response)
+		// 	//console.log("loginState:" + loginState);
+		// })
 	}
 
   return (
