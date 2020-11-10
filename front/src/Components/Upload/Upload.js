@@ -50,11 +50,11 @@ function Upload() {
         <form>
 					<div class="form-group">
 						<label>House Name</label>
-						<input type="text" onChange={onNameChange} class="form-control" id="email-input" placeholder="Input your email address here"></input>
+						<input type="text" onChange={onNameChange} class="form-control" id="email-input" placeholder="Input the house name"></input>
 					</div>
 					<div class="form-group">
 						<label>Address</label>
-						<input type="text" onChange={onAddressChange} class="form-control" id="password-input" placeholder="Input your password here"></input>
+						<input type="text" onChange={onAddressChange} class="form-control" id="password-input" placeholder="Input the address of the house"></input>
 					</div>
 
 					<button type="submit" class="btn btn-primary" onClick={onSubmit} >Submit</button>
