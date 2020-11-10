@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/iHomie/static/css/main.a818b7d7.chunk.css",
-    "main.js": "/iHomie/static/js/main.e0888b3c.chunk.js",
-    "main.js.map": "/iHomie/static/js/main.e0888b3c.chunk.js.map",
-    "runtime-main.js": "/iHomie/static/js/runtime-main.3739349e.js",
-    "runtime-main.js.map": "/iHomie/static/js/runtime-main.3739349e.js.map",
-    "static/css/2.6414bb7b.chunk.css": "/iHomie/static/css/2.6414bb7b.chunk.css",
-    "static/js/2.31987b5e.chunk.js": "/iHomie/static/js/2.31987b5e.chunk.js",
-    "static/js/2.31987b5e.chunk.js.map": "/iHomie/static/js/2.31987b5e.chunk.js.map",
-    "index.html": "/iHomie/index.html",
-    "precache-manifest.59ac7e174081b87970e87ab28f63af4a.js": "/iHomie/precache-manifest.59ac7e174081b87970e87ab28f63af4a.js",
-    "service-worker.js": "/iHomie/service-worker.js",
-    "static/css/2.6414bb7b.chunk.css.map": "/iHomie/static/css/2.6414bb7b.chunk.css.map",
-    "static/css/main.a818b7d7.chunk.css.map": "/iHomie/static/css/main.a818b7d7.chunk.css.map",
-    "static/js/2.31987b5e.chunk.js.LICENSE.txt": "/iHomie/static/js/2.31987b5e.chunk.js.LICENSE.txt"
+    "main.css": "/DevOps-project/static/css/main.a818b7d7.chunk.css",
+    "main.js": "/DevOps-project/static/js/main.e46380b2.chunk.js",
+    "main.js.map": "/DevOps-project/static/js/main.e46380b2.chunk.js.map",
+    "runtime-main.js": "/DevOps-project/static/js/runtime-main.53be6bca.js",
+    "runtime-main.js.map": "/DevOps-project/static/js/runtime-main.53be6bca.js.map",
+    "static/css/2.6414bb7b.chunk.css": "/DevOps-project/static/css/2.6414bb7b.chunk.css",
+    "static/js/2.31987b5e.chunk.js": "/DevOps-project/static/js/2.31987b5e.chunk.js",
+    "static/js/2.31987b5e.chunk.js.map": "/DevOps-project/static/js/2.31987b5e.chunk.js.map",
+    "index.html": "/DevOps-project/index.html",
+    "precache-manifest.8888517dff1c7c437927751a0bb0921e.js": "/DevOps-project/precache-manifest.8888517dff1c7c437927751a0bb0921e.js",
+    "service-worker.js": "/DevOps-project/service-worker.js",
+    "static/css/2.6414bb7b.chunk.css.map": "/DevOps-project/static/css/2.6414bb7b.chunk.css.map",
+    "static/css/main.a818b7d7.chunk.css.map": "/DevOps-project/static/css/main.a818b7d7.chunk.css.map",
+    "static/js/2.31987b5e.chunk.js.LICENSE.txt": "/DevOps-project/static/js/2.31987b5e.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.3739349e.js",
+    "static/js/runtime-main.53be6bca.js",
     "static/css/2.6414bb7b.chunk.css",
     "static/js/2.31987b5e.chunk.js",
     "static/css/main.a818b7d7.chunk.css",
-    "static/js/main.e0888b3c.chunk.js"
+    "static/js/main.e46380b2.chunk.js"
   ]
 }
