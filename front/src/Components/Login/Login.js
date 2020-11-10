@@ -33,13 +33,13 @@ function Login() {
 			
 			console.log(variables)
 
-			Axios.post(`http://dry-river-74760.herokuapp.com/login`, variables, {withCredentials: true})
+			Axios.post(`http://127.0.0.1:8000/login`, variables, {withCredentials: true})
 					.then(response => {
 						console.log(response.status)
 						console.log(response)
 						if(response.status === 200){
 							alert("Login successfully!")
-							// window.location.replace('/')//automatically jump to mainpage
+							window.location.replace('/')//automatically jump to mainpage
 						}else{
 							alert("You meet with an error!")
 						}
@@ -56,16 +56,16 @@ function Login() {
 					})
 		}
 
-		const onTest = (event) =>{
+		// const onTest = (event) =>{
 
-			Axios.get(`http://dry-river-74760.herokuapp.com/login`,  {withCredentials: true})
-					.then(response => {
-						console.log(response.status)
-						console.log(response)
+		// 	Axios.get(`http://127.0.0.1:8000/login`,  {withCredentials: true})
+		// 			.then(response => {
+		// 				console.log(response.status)
+		// 				console.log(response)
 						
-					})
+		// 			})
 					
-		}
+		// }
 
 
     return (
@@ -87,7 +87,7 @@ function Login() {
 				Need An Account? <Link className="link" to="/register">Sign Up Now</Link>
 			</small>
             
-			<button class="btn btn-primary"  onClick={onTest}>test</button> 
+			{/* <button class="btn btn-primary"  onClick={onTest}>test</button>  */}
       </div>
     )
 }

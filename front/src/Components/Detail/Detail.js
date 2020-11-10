@@ -22,7 +22,7 @@ class Description extends React.Component {
   }
 
   async componentDidMount() {
-    const response = await fetch(`https://dry-river-74760.herokuapp.com/housings/${this.props.objectId}`).then(res => res.json());
+    const response = await fetch(`http://127.0.0.1:8000/housings/${this.props.objectId}`).then(res => res.json());
     this.setState(response);
   }
 
@@ -41,7 +41,7 @@ class Description extends React.Component {
   }
 
   async handleSave(e) {
-    const response = await fetch(`https://dry-river-74760.herokuapp.com/${this.props.objectId}`, {
+    const response = await fetch(`http://127.0.0.1:8000/${this.props.objectId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
