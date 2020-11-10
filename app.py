@@ -277,7 +277,7 @@ class Register(Resource):
             return make_response("authenticated wrong", 400)
         if User.objects(email=content.get('email')).first() is not None:
             return make_response("email has been registered", 401)
-        if User.objects(email=content.get('username')).first() is not None:
+        if User.objects(username=content.get('username')).first() is not None:
             return make_response("username has been registered", 402)
         if content.get('username') is not None and content.get('password') \
                 is not None and content.get('email') is not None:
@@ -409,4 +409,4 @@ def get_current_user_id():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
