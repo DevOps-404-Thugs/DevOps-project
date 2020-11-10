@@ -19,6 +19,7 @@ from wtforms.validators import DataRequired, Length, \
 from api_config import DB_URI
 from pymongo import MongoClient
 import datetime
+import os
 
 app = Flask(__name__)
 app.url_map.converters['objectid'] = ObjectIDConverter
@@ -409,4 +410,5 @@ def get_current_user_id():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port='8000')
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
