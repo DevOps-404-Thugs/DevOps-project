@@ -8,7 +8,7 @@ function NavBar() {
 	const [loginState, setLoginState] = useState(0);//default as unlogin
 
 	useEffect(() => {
-		Axios.get(`http://127.0.0.1:8000/login`,{withCredentials: true})
+		Axios.get(`https://dry-river-74760.herokuapp.com/login`,{withCredentials: true})
 		.then(response => {
 			console.log("loginGET:"+response.status)
 			console.log(response)
@@ -32,7 +32,7 @@ function NavBar() {
 	
 
 	const onLogout = (event) => {
-		Axios.get(`http://127.0.0.1:8000/logout`, {withCredentials: true})
+		Axios.get(`https://dry-river-74760.herokuapp.com/logout`, {withCredentials: true})
 		.then(response => {
 			console.log("logoutGET:"+response.status)
 			console.log(response)

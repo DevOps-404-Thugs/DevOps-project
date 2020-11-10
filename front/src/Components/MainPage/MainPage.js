@@ -12,7 +12,7 @@ function MainPage() {
 
     
 		useEffect(() => {
-			Axios.get(`http://127.0.0.1:8000/housings`)
+			Axios.get(`https://dry-river-74760.herokuapp.com/housings`)
 				.then(response => {
           console.log(response.data);
           console.log("housingsGET:"+response.status);
