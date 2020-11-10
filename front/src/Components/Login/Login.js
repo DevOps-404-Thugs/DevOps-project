@@ -46,30 +46,16 @@ function Login() {
 					})
 					.catch(function(error){
 						console.log(error.response)
-						if(error.status === 401){
+						if(error.response.status === 401){
 							alert("You need to register for the account!")
-						}else if(error.status === 400){
+						}else if(error.response.status === 400){
 							alert("Wrong Password!")
-						}else if(error.status === 402){
+						}else if(error.response.status === 402){
 							alert("Wrong Parameters!")
 						}
 					})
 		}
 
-		// const onTest = (event) =>{
-
-		// 	Axios.get(`http://127.0.0.1:8000/login`,  {withCredentials: true})
-		// 			.then(response => {
-		// 				console.log(response.status)
-		// 				console.log(response)
-						
-		// 			})
-		// 			.catch(function(error){
-		// 				console.log(error.response)
-						
-		// 			})
-		// }
-		
 
     return (
       <div style={{ width: '75%', margin: '3rem auto' }}>
