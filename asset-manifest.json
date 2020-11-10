@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/iHomie/static/css/main.a818b7d7.chunk.css",
+    "main.js": "/iHomie/static/js/main.e0888b3c.chunk.js",
+    "main.js.map": "/iHomie/static/js/main.e0888b3c.chunk.js.map",
+    "runtime-main.js": "/iHomie/static/js/runtime-main.3739349e.js",
+    "runtime-main.js.map": "/iHomie/static/js/runtime-main.3739349e.js.map",
+    "static/css/2.6414bb7b.chunk.css": "/iHomie/static/css/2.6414bb7b.chunk.css",
+    "static/js/2.31987b5e.chunk.js": "/iHomie/static/js/2.31987b5e.chunk.js",
+    "static/js/2.31987b5e.chunk.js.map": "/iHomie/static/js/2.31987b5e.chunk.js.map",
+    "index.html": "/iHomie/index.html",
+    "precache-manifest.59ac7e174081b87970e87ab28f63af4a.js": "/iHomie/precache-manifest.59ac7e174081b87970e87ab28f63af4a.js",
+    "service-worker.js": "/iHomie/service-worker.js",
+    "static/css/2.6414bb7b.chunk.css.map": "/iHomie/static/css/2.6414bb7b.chunk.css.map",
+    "static/css/main.a818b7d7.chunk.css.map": "/iHomie/static/css/main.a818b7d7.chunk.css.map",
+    "static/js/2.31987b5e.chunk.js.LICENSE.txt": "/iHomie/static/js/2.31987b5e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3739349e.js",
+    "static/css/2.6414bb7b.chunk.css",
+    "static/js/2.31987b5e.chunk.js",
+    "static/css/main.a818b7d7.chunk.css",
+    "static/js/main.e0888b3c.chunk.js"
+  ]
+}
