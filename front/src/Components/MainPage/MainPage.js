@@ -12,7 +12,7 @@ function MainPage() {
 
     
 		useEffect(() => {
-			Axios.get(`https://dry-river-74760.herokuapp.com/housings`)
+			Axios.get(`http://dry-river-74760.herokuapp.com/housings`)
 				.then(response => {
           console.log(response.data);
           console.log("housingsGET:"+response.status);
@@ -25,7 +25,7 @@ function MainPage() {
     const renderCards = Houses.map((house, index) => {
 
         return <Col lg={6} md={8} xs={24} >
-                  <img style={{ width:'50%'}} src={`https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg`} alt={"houseImage"}/>
+                  <img style={{ width:'50%'}} src={`http://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg`} alt={"houseImage"}/>
                   <p>{house.name}</p>
                   <p>{house.address}</p>
 

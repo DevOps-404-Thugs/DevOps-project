@@ -38,7 +38,7 @@ function Register() {
 			
 			console.log(variables)
 
-			Axios.post(`https://dry-river-74760.herokuapp.com/register`, variables)
+			Axios.post(`http://dry-river-74760.herokuapp.com/register`, variables)
 					.then(response => {
 						console.log(response.status)
 						console.log(response)

@@ -25,7 +25,7 @@ function Upload() {
 			address : addressValue
 		}
 		
-		Axios.post(`https://dry-river-74760.herokuapp.com/housings`, variables, {withCredentials: true})
+		Axios.post(`http://dry-river-74760.herokuapp.com/housings`, variables, {withCredentials: true})
 					.then(response => {
 						console.log(response.status)
 						console.log(response)
