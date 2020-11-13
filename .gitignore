@@ -5,3 +5,5 @@ source/.coverage
 source/__pycache__/
 front/node_modules/
 front/package-lock.json
+source/static
+source/templates/index.html

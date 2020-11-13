@@ -25,7 +25,7 @@ function Upload() {
 			address : addressValue
 		}
 		
-		Axios.post(`http://127.0.0.1:8000/housings`, variables, {withCredentials: true})
+		Axios.post(`/housings`, variables, {withCredentials: true})
 					.then(response => {
 						console.log(response.status)
 						console.log(response)

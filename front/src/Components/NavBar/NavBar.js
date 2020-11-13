@@ -2,23 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Axios from 'axios'
 import "./NavBar.css"
-
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 function NavBar() {
-	const [loginState, setLoginState] = useState(0);//default as unlogin
+	const [loginState, setLoginState] = useState(false); //default as unlogin
 
 	useEffect(() => {
-		Axios.get(`http://127.0.0.1:8000/login`,{withCredentials: true})
+		Axios.get(`/login`,{withCredentials: true})
 		.then(response => {
 			console.log("loginGET:"+response.status)
 			console.log(response)
 			if(response.status === 200){
-				//console.log("loginState loginGET200:" + loginState);
-				setLoginState(1)//unlogin
-				//console.log("loginState after loginGET200:" + loginState);
+				setLoginState(true);
 			}else if(response.status === 205){
-				setLoginState(0)//unlogin
-				//console.log("loginState after loginGET205:" + loginState);
+				setLoginState(false); // unlogin
 			}
 		})
 		.catch(function(error){
@@ -29,44 +29,48 @@ function NavBar() {
 
 		
 	},[]);
-	console.log("loginState:" + loginState);
+	console.log(loginState);
 
 	const onLogout = (event) => {
-		Axios.get(`http://127.0.0.1:8000/logout`, {withCredentials: true})
+		Axios.get(`/logout`, {withCredentials: true})
 		.then(response => {
 			console.log("logoutGET:"+response.status)
 			console.log(response)
 			if(response.status === 200){
-				setLoginState(0)//unlogin
-				//console.log("loginState after logout200:" + loginState);
+				setLoginState(false); // unlogin
 			}
 		})
 		.catch(function(error){
 			console.log("logoutGET:"+error.response.status)
 			console.log(error.response)
-			//console.log("loginState:" + loginState);
 		})
 	}
 
+	const onLogin = (event) => {
+		window.location = "/ihomie#/login";
+	}
+
   return (
-    <nav class="menu">
-			<div class="menu_container">
-				<div class="menu_right">
-					{loginState === 0?
-						<Link class="link" to={'/login'}>Login</Link>
-						: 
-						<button class="btn btn-primary" onClick={onLogout}>log out</button> 
-					}
-						
-				</div>
-				
-				<div class="menu_left">
-					<Link class="link" to={'/'}>Home</Link>
-				</div>
-			</div>
-			{/* <p>{loginState}</p> */}
-    </nav>
-  )
+	  <Navbar bg="light" expand="lg">
+		  <Navbar.Brand href="/ihomie">iHomie</Navbar.Brand>
+		  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+		  <Navbar.Collapse id="basic-navbar-nav">
+			<Nav className="mr-auto">
+			  <Nav.Link href="/ihomie">Home</Nav.Link>
+			  <Nav.Link href="/ihomie#/upload">Upload</Nav.Link>
+			  <Nav.Link href="/ihomie#/register">Register</Nav.Link>
+			</Nav>
+			<Form inline>
+			  {loginState == false?
+				  <Button variant="outline-primary" onClick={onLogin}>Login</Button>
+				  :
+				  <Button variant="primary" onClick={onLogout}>Logout</Button>
+			  }
+			</Form>
+		  </Navbar.Collapse>
+		</Navbar>
+	)
+  
 }
 
 export default NavBar
