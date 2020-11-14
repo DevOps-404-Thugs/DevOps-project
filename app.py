@@ -4,11 +4,10 @@ The endpoint called `endpoints` will return all available endpoints
 """
 from bson.objectid import ObjectId
 from flask import Flask, make_response, request, jsonify, \
-    session
+    session, render_template
 from flask_restx import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
 from flask_wtf import FlaskForm
-from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, current_user, \
     logout_user, login_required, UserMixin
@@ -19,14 +18,12 @@ from wtforms.validators import DataRequired, Length, \
 from api_config import DB_URI
 from pymongo import MongoClient
 import datetime
-import os
 
 app = Flask(__name__)
 app.url_map.converters['objectid'] = ObjectIDConverter
 app.config['SECRET_KEY'] = '68fe6951d932820ac5d2a0b5d352d77a'
 
 api = Api(app)
-CORS(app, supports_credentials=True)
 bcrypt = Bcrypt(app)
 
 app.config["MONGODB_HOST"] = DB_URI
@@ -409,6 +406,10 @@ def get_current_user_id():
         return str(user.get('_id'))
 
 
+@app.route("/ihomie")
+def my_index():
+    return render_template("index.html", flask_token="Hello world")
+
+
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(debug=True)
