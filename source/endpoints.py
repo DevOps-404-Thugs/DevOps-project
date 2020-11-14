@@ -406,7 +406,7 @@ def get_current_user_id():
         return str(user.get('_id'))
 
 
-@app.route("/")
+@app.route("/ihomie")
 def my_index():
     return render_template("index.html", flask_token="Hello world")
 
