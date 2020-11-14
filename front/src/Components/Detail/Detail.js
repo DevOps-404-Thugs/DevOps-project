@@ -27,7 +27,7 @@ export class Description extends React.Component {
   }
 
   async componentDidMount() {
-    const response = await fetch(`http://127.0.0.1:8000/housings/${this.props.objectId}`).then(res => res.json());
+    const response = await fetch(`/housings/${this.props.objectId}`).then(res => res.json());
     this.setState(response);
   }
 
@@ -46,7 +46,7 @@ export class Description extends React.Component {
   }
 
   async handleSave(e) {
-    const response = await fetch(`http://127.0.0.1:8000/housings/${this.props.objectId}`, {
+    const response = await fetch(`/housings/${this.props.objectId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ export class Description extends React.Component {
   }
 
   async handleDelete(e) {
-    const response = await fetch(`http://127.0.0.1:8000/housings/${this.props.objectId}`, {
+    const response = await fetch(`/housings/${this.props.objectId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
