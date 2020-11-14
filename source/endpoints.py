@@ -4,11 +4,10 @@ The endpoint called `endpoints` will return all available endpoints
 """
 from bson.objectid import ObjectId
 from flask import Flask, make_response, request, jsonify, \
-    session
+    session, render_template
 from flask_restx import Resource, Api, reqparse
 from flask_mongoengine import MongoEngine
 from flask_wtf import FlaskForm
-from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, current_user, \
     logout_user, login_required, UserMixin
@@ -19,14 +18,12 @@ from wtforms.validators import DataRequired, Length, \
 from api_config import DB_URI
 from pymongo import MongoClient
 import datetime
-import os
 
 app = Flask(__name__)
 app.url_map.converters['objectid'] = ObjectIDConverter
 app.config['SECRET_KEY'] = '68fe6951d932820ac5d2a0b5d352d77a'
 
 api = Api(app)
-CORS(app, supports_credentials=True)
 bcrypt = Bcrypt(app)
 
 app.config["MONGODB_HOST"] = DB_URI
@@ -278,7 +275,7 @@ class Register(Resource):
             return make_response("authenticated wrong", 400)
         if User.objects(email=content.get('email')).first() is not None:
             return make_response("email has been registered", 401)
-        if User.objects(username=content.get('username')).first() is not None:
+        if User.objects(email=content.get('username')).first() is not None:
             return make_response("username has been registered", 402)
         if content.get('username') is not None and content.get('password') \
                 is not None and content.get('email') is not None:
@@ -408,7 +405,9 @@ def get_current_user_id():
         user = userCollection.find_one(query)
         return str(user.get('_id'))
 
+@app.route("/ihomie")
+def my_index():
+    return render_template("index.html", flask_token="Hello world")
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(debug=True)
