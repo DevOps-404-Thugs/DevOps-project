@@ -38,7 +38,7 @@ function Register() {
 			
 			console.log(variables)
 
-			Axios.post(`http://127.0.0.1:8000/register`, variables)
+			Axios.post(`/register`, variables)
 					.then(response => {
 						console.log(response.status)
 						console.log(response)

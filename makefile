@@ -6,7 +6,7 @@ DOCFILES = $(shell ls *.py | sed -e 's/.py/.html/')
 
 FORCE:
 
-prod: tests github
+prod: tests build_front github
 
 tests: lint unit
 
@@ -29,3 +29,7 @@ docs: FORCE
 	cd source; make docs
 
 travis: tests
+
+build_front:
+	cd $(FRONT_END); yarn
+	cd $(FRONT_END); yarn build

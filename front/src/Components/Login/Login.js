@@ -33,13 +33,13 @@ function Login() {
 			
 			console.log(variables)
 
-			Axios.post(`http://127.0.0.1:8000/login`, variables, {withCredentials: true})
+			Axios.post(`/login`, variables, {withCredentials: true})
 					.then(response => {
 						console.log(response.status)
 						console.log(response)
 						if(response.status === 200){
 							alert("Login successfully!")
-							window.location.replace('/')//automatically jump to mainpage
+							window.location.replace('/ihomie')//automatically jump to mainpage
 						}else{
 							alert("You meet with an error!")
 						}
