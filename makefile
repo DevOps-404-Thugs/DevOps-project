@@ -29,3 +29,7 @@ docs: FORCE
 	cd source; make docs
 
 travis: tests
+
+build_front:
+	cd $(FRONT_END); yarn
+	cd $(FRONT_END); yarn build

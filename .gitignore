@@ -5,3 +5,7 @@ source/.coverage
 source/__pycache__/
 front/node_modules/
 front/package-lock.json
+front/yarn.lock
+__pycache__/
+.DS_Store
+source/static/.DS_Store
