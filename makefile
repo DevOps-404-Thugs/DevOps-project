@@ -15,7 +15,7 @@ unit: FORCE
 
 github: FORCE
 	- git commit -a
-	git push origin master
+	git push origin tomroku
 
 lint: FORCE
 	$(LINTER) $(SRC_DIR)/endpoints.py $(SRC_DIR)/test.py
