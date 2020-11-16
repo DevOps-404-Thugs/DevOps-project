@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Axios from 'axios'
-import { Icon, Col, Card, Row } from 'antd';
+import {Col, Row } from 'antd';
+import { Link } from 'react-router-dom';
+// import NavBar from '../NavBar/NavBar.js';
+import "./MainPage.css"
 
-const { Meta } = Card;
 
 function MainPage() {
 
@@ -10,9 +12,10 @@ function MainPage() {
 
     
 		useEffect(() => {
-			Axios.get(`http://127.0.0.1:8000/housings`)
+			Axios.get(`/housings`)
 				.then(response => {
-					console.log(response.data);
+          console.log(response.data);
+          console.log("housingsGET:"+response.status);
 					setHouses(response.data);
 				})
 		},[]);
@@ -22,20 +25,25 @@ function MainPage() {
     const renderCards = Houses.map((house, index) => {
 
         return <Col lg={6} md={8} xs={24} >
-            <Card
-                hoverable={true}
-                cover={<img style={{ width:'50%'}} src={`https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg`} alt="houseImage"/>}
-            >
-              <Meta
-                    title={house.name}
-                    description={house.address}
-              />
-            </Card>
+                  <img style={{ width:'50%'}} src={`https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg`} alt={"houseImage"}/>
+                  <p>{house.name}</p>
+                  <p>{house.address}</p>
+
+                  {/* <Link to={'/detail/'+house._id}>Go to see detail</Link> */}
+                  <Link to={{
+                    pathname: '/detail',
+                    state: {
+                      objectId: house._id.$oid
+                    }
+                  }}>Go to see detail</Link>
+
         </Col>
     })
 
+
     return (
         <div style={{ width: '75%', margin: '3rem auto' }}>
+          {/* <NavBar /> */}
             <div style={{ textAlign: 'center' }}>
                 <h2>  Find Your Future Home in iHomie </h2>
             </div>
@@ -47,9 +55,13 @@ function MainPage() {
             </div>
             <br /><br />
 
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {/* <button onclick={() => this.props.history.push('upload')}>Upload New House</button> */}
+                <Link className="link" to="/upload">Upload New House</Link>
+            </div>
 
         </div>
     )
 }
 
-export default MainPage
+export default MainPage;
