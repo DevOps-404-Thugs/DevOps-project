@@ -21,9 +21,7 @@ lint: FORCE
 	$(LINTER) $(SRC_DIR)/endpoints.py $(SRC_DIR)/test.py
 
 dev_env: FORCE
-	pip3 install -r $(REQ_DIR)/requirements-dev.txt
-	cd $(FRONT_END); npm install
-	cd $(FRONT_END); cat requirements-npm.txt | xargs npm install -g
+	pip3 install -r requirements.txt
 
 docs: FORCE
 	cd source; make docs
