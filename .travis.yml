@@ -6,6 +6,8 @@ script:
 - "make travis"
 
 after_success:
-  - heroku container:login
-  - heroku container:push web -a dry-river-74760
-  - heroku container:release web -a dry-river-74760
+  deploy:
+    provider: heroku
+    api_key: "35ed7263-f3c1-4a3c-ac36-2e0c720b3593"
+    app: dry-river-74760
+    on: master
