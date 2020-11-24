@@ -4,3 +4,8 @@ python:
 install: "pip3 install -r requirements.txt"
 script: 
 - "make travis"
+
+after_success:
+  - heroku container:login
+  - heroku container:push web -a dry-river-74760
+  - heroku container:release web -a dry-river-74760
