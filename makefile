@@ -29,7 +29,7 @@ dev_env: FORCE
 docs: FORCE
 	cd source; make docs
 
-travis: tests
+travis: lint unit1
 
 build_front:
 	cd $(FRONT_END); yarn build
