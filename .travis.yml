@@ -9,10 +9,9 @@ after_failure:
   - echo "unit test failure"
   - travis_terminate 2
 
-after_success:
-- deploy:
-    provider: heroku
-    api_key: "35ed7263-f3c1-4a3c-ac36-2e0c720b3593"
-    app: dry-river-74760
-    on:
-      branch: master
+deploy:
+  provider: heroku
+  api_key: "35ed7263-f3c1-4a3c-ac36-2e0c720b3593"
+  app: dry-river-74760
+  on:
+    branch: master

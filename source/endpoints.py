@@ -373,9 +373,10 @@ class Account(Resource):
         content = request.json
         if content.get('username') is not None \
                 and content.get('email') is not None:
-            check_user = {"username": content.get('username'),
-                          "email": content.get('email')}
-            if userCollection.find(check_user).count() > 0:
+            check_user = User.objects(
+                username=content.get('username'),
+                email=content.get('email')).first()
+            if check_user:
                 return make_response("user existed", 400)
 
             updated_user = {

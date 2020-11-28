@@ -8,7 +8,7 @@ FORCE:
 
 prod: tests github
 
-tests: lint unit1
+tests: lint unit
 
 unit: FORCE
 	cd source; coverage run test.py; coverage report endpoints.py; rm .coverage
