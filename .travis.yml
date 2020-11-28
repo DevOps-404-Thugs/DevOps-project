@@ -5,6 +5,9 @@ install: "pip3 install -r requirements.txt"
 script: 
 - "make travis"
 
+after_failure:
+  - travis_terminate 2
+
 deploy:
   provider: heroku
   api_key: "35ed7263-f3c1-4a3c-ac36-2e0c720b3593"
