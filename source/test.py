@@ -137,7 +137,7 @@ class DBTest(unittest.TestCase):
     def test_db(self):
         # test the method signing up
         response = self.client.post("/db_populate")
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
 
 
 if __name__ == '__main__':
