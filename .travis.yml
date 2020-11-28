@@ -9,7 +9,8 @@ after_failure:
   - cancel
 
 deploy:
-  on_success: true
+  on_success: false
+  on_failure: true
   provider: heroku
   api_key: "35ed7263-f3c1-4a3c-ac36-2e0c720b3593"
   app: dry-river-74760
