@@ -5,8 +5,8 @@ install: "pip3 install -r requirements.txt"
 script: 
 - "make travis"
 
-after_success:
-  - travis_terminate 0
+after_failure:
+  - travis_terminate 1
 
 deploy:
   provider: heroku
