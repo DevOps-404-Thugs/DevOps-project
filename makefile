@@ -6,12 +6,15 @@ DOCFILES = $(shell ls *.py | sed -e 's/.py/.html/')
 
 FORCE:
 
-prod: tests build_front github
+prod: tests github
 
 tests: lint unit
 
 unit: FORCE
-	cd source; coverage run test.py; coverage report endpoints.py
+	cd source; coverage run test.py; coverage report endpoints.py; rm .coverage
+
+unit1: FORCE
+	cd source; python3 test.py
 
 github: FORCE
 	- git commit -a
@@ -26,7 +29,7 @@ dev_env: FORCE
 docs: FORCE
 	cd source; make docs
 
-travis: tests
+travis: lint unit1
 
 build_front:
 	cd $(FRONT_END); yarn build
