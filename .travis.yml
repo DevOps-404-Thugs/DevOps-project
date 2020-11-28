@@ -6,7 +6,7 @@ script:
 - "make travis"
 
 after_failure:
-  - travis_terminate 1
+  - travis_terminate 0
 
 deploy:
   provider: heroku
