@@ -6,8 +6,8 @@ script:
 - "make travis"
 
 after_failure:
-  - travis_terminate 2
   - echo "unit test failure"
+  - travis_terminate 2
 
 deploy:
   provider: heroku
