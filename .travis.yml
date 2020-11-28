@@ -5,8 +5,7 @@ install: "pip3 install -r requirements.txt"
 script: 
 - "make travis"
 
-after_success:
-  deploy:
-    provider: heroku
-    api_key: "400396e8-17a7-4b9f-96d5-5aa7ce1cb91d"
-    app: dry-river-74760
+deploy:
+  provider: heroku
+  api_key: "35ed7263-f3c1-4a3c-ac36-2e0c720b3593"
+  app: dry-river-74760
