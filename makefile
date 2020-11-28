@@ -11,7 +11,7 @@ prod: tests github
 tests: lint unit
 
 unit: FORCE
-	cd source; coverage run test.py; coverage report endpoints.py
+	cd source; coverage run test.py; coverage report endpoints.py; rm .coverage
 
 github: FORCE
 	- git commit -a
