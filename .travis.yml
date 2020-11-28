@@ -7,6 +7,7 @@ script:
 
 after_failure:
   - travis_terminate 2
+  - echo "unit test failure"
 
 deploy:
   provider: heroku
