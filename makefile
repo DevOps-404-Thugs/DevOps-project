@@ -32,4 +32,5 @@ docs: FORCE
 travis: lint unit1
 
 build_front:
+	cd $(FRONT_END); yarn
 	cd $(FRONT_END); yarn build
