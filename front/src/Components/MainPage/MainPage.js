@@ -23,13 +23,13 @@ function MainPage() {
 
     const renderCards = Houses.map((house, index) => {
 
-        return <Col lg={6} md={8} xs={24} >
-                  <img style={{ width:'50%'}} src={`https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg`} alt={"houseImage"}/>
-                  <p>{house.name}</p>
-                  <p>{house.address}</p>
+        return <Col lg={6} md={8} xs={24} style={{ border: '#CCC solid 1px', 'border-radius' : '10px', padding:'30px', margin:'30px auto 30px'}}>
+                  <img style={{ width: '100%'}} src={`https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg`} alt={"houseImage"}/>
+                  <p style={{ 'padding-top':'10px', margin : '0', 'font-size' : '24px', 'font-weight' : '700'}}>{house.name}</p>
+                  <p style={{ 'padding-top':'10px', 'padding-bottom':'5px', margin : '0'}}>{house.address}</p>
 
                   {/* <Link to={'/detail/'+house._id}>Go to see detail</Link> */}
-                  <Link to={{
+                  <Link style={{ 'padding-top':'10px', margin : '0'}} to={{
                     pathname: '/detail',
                     state: {
                       objectId: house._id.$oid
@@ -41,7 +41,7 @@ function MainPage() {
 
 
     return (
-        <div style={{ width: '75%', margin: '3rem auto' }}>
+        <div style={{ width: '65%', margin: '3rem auto' }}>
           {/* <NavBar /> */}
             <div style={{ textAlign: 'center' }}>
                 <h2>  Find Your Future Home in iHomie </h2>
