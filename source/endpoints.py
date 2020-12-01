@@ -377,7 +377,7 @@ class Account(Resource):
                 username=content.get('username'),
                 email=content.get('email')).first()
             if check_user:
-                return make_response("user existed", 401)
+                return make_response("user existed", 400)
 
             updated_user = {
                 "$set": {

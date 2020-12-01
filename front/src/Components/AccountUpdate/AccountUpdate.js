@@ -38,7 +38,7 @@ function Upload() {
                     })
                     .catch(function(error){
                         console.log(error.response)
-                        if(error.response.status === 401){
+                        if(error.response.status === 400){
 							alert("This account has existed!")
 						}
 					})
