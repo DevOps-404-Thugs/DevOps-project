@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 function MainPage() {
 
     const [Houses,setHouses] = useState([])//set as array 
+    // const [picture, setPicture] = useState()//picture url
 
     
 		useEffect(() => {
@@ -15,16 +16,26 @@ function MainPage() {
 				.then(response => {
           console.log(response.data);
           console.log("housingsGET:"+response.status);
-					setHouses(response.data);
+          setHouses(response.data);
+          console.log(Houses)
 				})
 		},[]);
 		
 
 
     const renderCards = Houses.map((house, index) => {
+      // Axios.get(`https://api.unsplash.com/photos/random?query=house&client_id=1vH0e4mIPBBiGM37PkUm8BDCDOXYgqEmGeGgbfFxXG8`)
+      // .then(response => {
+      //   console.log("========================")
+      //   console.log(response.data);
+      //   console.log(response.data.urls.small);
+      //   setPicture(response.data.urls.small)
+      // })
+      
 
         return <Col lg={6} md={8} xs={24} style={{ border: '#CCC solid 1px', 'border-radius' : '10px', padding:'30px', margin:'30px auto 30px'}}>
                   <img style={{ width: '100%'}} src={`https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg`} alt={"houseImage"}/>
+                  {/* <img style={{ width: '100%', height:'300px'}} src={picture} alt={"houseImage"}/> */}
                   <p style={{ 'padding-top':'10px', margin : '0', 'font-size' : '24px', 'font-weight' : '700'}}>{house.name}</p>
                   <p style={{ 'padding-top':'10px', 'padding-bottom':'5px', margin : '0'}}>{house.address}</p>
 
