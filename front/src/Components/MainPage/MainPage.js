@@ -3,7 +3,6 @@ import Axios from 'axios'
 import {Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 // import NavBar from '../NavBar/NavBar.js';
-import "./MainPage.css"
 
 
 function MainPage() {
@@ -55,9 +54,13 @@ function MainPage() {
             </div>
             <br /><br />
 
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center'}}>
                 {/* <button onclick={() => this.props.history.push('upload')}>Upload New House</button> */}
                 <Link className="link" to="/upload">Upload New House</Link>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Link className="link" to="/account_update" style={{color:'orange'}}>Update Account Information</Link>
             </div>
 
         </div>

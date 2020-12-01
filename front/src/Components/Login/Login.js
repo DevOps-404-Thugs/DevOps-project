@@ -49,7 +49,6 @@ function Login() {
 						if(error.response.status === 401){
 							alert("You need to register for the account!")
 						}else if(error.response.status === 400){
-							console.log("1111111")
 							alert("Wrong Password!")
 						}else if(error.response.status === 402){
 							alert("Wrong Parameters!")
