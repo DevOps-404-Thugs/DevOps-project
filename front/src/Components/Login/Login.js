@@ -46,11 +46,11 @@ function Login() {
 					})
 					.catch(function(error){
 						console.log(error.response)
-						if(error.status === 401){
+						if(error.response.status === 401){
 							alert("You need to register for the account!")
-						}else if(error.status === 400){
+						}else if(error.response.status === 400){
 							alert("Wrong Password!")
-						}else if(error.status === 402){
+						}else if(error.response.status === 402){
 							alert("Wrong Parameters!")
 						}
 					})
