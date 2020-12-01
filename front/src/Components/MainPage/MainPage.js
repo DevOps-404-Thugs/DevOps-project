@@ -17,7 +17,7 @@ function MainPage() {
           console.log(response.data);
           console.log("housingsGET:"+response.status);
           setHouses(response.data);
-          console.log(Houses)
+          // console.log(Houses)
 				})
 		},[]);
 		
