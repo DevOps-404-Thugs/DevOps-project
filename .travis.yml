@@ -6,8 +6,12 @@ script:
 - "make travis"
 
 after_failure:
+  - rm source/.coverage
   - echo "unit test failure"
-  - travis_terminate 2
+  - travis_terminate 1
+
+after_success:
+  - "make coverage"
 
 deploy:
   provider: heroku
