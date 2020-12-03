@@ -11,7 +11,7 @@ prod: tests coverage github
 tests: lint unit
 
 coverage: FORCE
-	cd source; coverage report endpoints.py Housings.py U.py api_config.py test.py; rm .coverage
+	cd source; coverage report endpoints.py Housings.py Users.py api_config.py test.py; rm .coverage
 
 unit: FORCE
 	cd source; coverage run test.py
