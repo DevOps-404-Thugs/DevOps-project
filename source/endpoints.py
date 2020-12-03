@@ -5,19 +5,16 @@ The endpoint called `endpoints` will return all available endpoints
 from bson.objectid import ObjectId
 from flask import Flask, make_response, request, jsonify, \
     session, render_template
-from flask_restx import Resource, Api, reqparse
-from flask_mongoengine import MongoEngine
-from flask_wtf import FlaskForm
+from flask_restx import Resource, Api
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, current_user, \
-    logout_user, login_required, UserMixin
+    logout_user, login_required
 from flask_objectid_converter import ObjectIDConverter
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, \
-    Email, EqualTo, ValidationError
 from api_config import DB_URI
 from pymongo import MongoClient
 import datetime
+from Housings import Housing, db
+from Users import User
 
 app = Flask(__name__)
 app.url_map.converters['objectid'] = ObjectIDConverter
@@ -31,7 +28,7 @@ app.config['MONGODB_SETTINGS'] = {
     'db': 'API',
     'host': DB_URI
 }
-db = MongoEngine()
+
 db.init_app(app)
 
 client = MongoClient(DB_URI)
@@ -42,107 +39,6 @@ housingCollection = mydb["housing"]
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
-
-parser = reqparse.RequestParser()
-parser.add_argument('username')
-parser.add_argument('password')
-
-
-class RegistrationForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField(
-        'Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up')
-
-    def validate_username(self, username):
-        query = {"username": username.data}
-        if userCollection.find(query).count() > 0:
-            raise ValidationError('That username is taken. \
-                Please choose a different one.')
-
-    def validate_email(self, email):
-        query = {"email": email.data}
-        if userCollection.find(query).count() > 0:
-            raise ValidationError('That email is taken. \
-                Please choose a different one.')
-
-
-class LoginForm(FlaskForm):
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember Me')
-    submit = SubmitField('Login')
-
-
-class UpdateAccountForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    submit = SubmitField('Update')
-
-    def validate_username(self, username):
-        if username.data != current_user.username:
-            user = User.objects(username=username.data).first()
-            if user:
-                raise ValidationError('That username is taken. \
-                    Please choose a different one.')
-
-    def validate_email(self, email):
-        if email.data != current_user.email:
-            user = User.objects(email=email.data).first()
-            if user:
-                raise ValidationError('That email is taken. \
-                    Please choose a different one.')
-
-
-class HousingForm(FlaskForm):
-    name = StringField('Housing Name', validators=[DataRequired()])
-    address = StringField('Housing Address', validators=[DataRequired()])
-    submit = SubmitField('Post')
-
-
-class Housing(db.Document):
-    """
-    This class defines the database for a generic housing type
-    """
-    meta = {'collection': 'housing'}
-    _id = db.ObjectIdField()
-    name = db.StringField()
-    address = db.StringField()
-    date_posted = db.DateTimeField()
-    author_id = db.StringField()
-    author_username = db.StringField()
-
-    def to_json(self):
-        return {
-            "name": self.name,
-            "address": self.address,
-            "author_id": self.author_id,
-            "author_username": db.StringField()
-        }
-
-
-class User(db.Document, UserMixin):
-    """
-    This class defines the database for a generic user type for login/signup
-    """
-    meta = {'collection': 'user'}
-    username = db.StringField()
-    email = db.StringField()
-    password = db.StringField()
-
-    def to_json(self):
-        return {
-            "username": self.username,
-            "email": self.email,
-            "password": self.password
-        }
 
 
 @login_manager.user_loader
