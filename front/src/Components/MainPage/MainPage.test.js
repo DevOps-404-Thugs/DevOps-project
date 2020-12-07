@@ -1,8 +1,17 @@
 import React from 'react';
-import enableHooks from 'jest-react-hook-shallow';
+import { BrowserRouter } from 'react-router-dom';
+import renderer from 'react-test-renderer';
 import MainPage from './MainPage';
 
-TextDecoderStream('test Main Page', () =>{
-    const component = shallow(<MainPage />);
-    expect(component.text()).toContain('house');
+
+describe('test', () =>{
+    test("match the snapshot", () =>{
+        const component = renderer.create(
+            <BrowserRouter>
+                <MainPage/>
+            </BrowserRouter>
+        );
+        let tree = component.toJSON();
+        expect(tree).toMatchSnapshot();
+    });  
 });
