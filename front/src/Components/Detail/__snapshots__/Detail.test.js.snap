@@ -24,7 +24,7 @@ exports[`Description generates correct page 1`] = `
       >
         <img
           className="card-img-top"
-          src="https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg"
+          src="/pics/22.jpg"
         />
         <div
           className="card-body"

@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Description generates correct page 1`] = `
+<div
+  className="App"
+>
+  <nav
+    className="navbar navbar-expand-lg navbar-light bg-light"
+  >
+    <a
+      className="navbar-brand"
+      href="/ihomie"
+    >
+      iHomie
+    </a>
+    <button
+      aria-controls="basic-navbar-nav"
+      aria-label="Toggle navigation"
+      className="navbar-toggler collapsed"
+      onClick={[Function]}
+      type="button"
+    >
+      <span
+        className="navbar-toggler-icon"
+      />
+    </button>
+    <div
+      aria-expanded={null}
+      className="navbar-collapse collapse"
+      id="basic-navbar-nav"
+    >
+      <div
+        className="mr-auto navbar-nav"
+        onKeyDown={[Function]}
+      >
+        <a
+          className="nav-link"
+          data-rb-event-key="/ihomie"
+          href="/ihomie"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          Home
+        </a>
+        <a
+          className="nav-link"
+          data-rb-event-key="/ihomie#/upload"
+          href="/ihomie#/upload"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          Upload
+        </a>
+        <a
+          className="nav-link"
+          data-rb-event-key="/ihomie#/register"
+          href="/ihomie#/register"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          Register
+        </a>
+      </div>
+      <form
+        className="form-inline"
+      >
+        <button
+          className="btn btn-outline-primary"
+          disabled={false}
+          onClick={[Function]}
+          type="button"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </nav>
+  <div
+    style={
+      Object {
+        "margin": "3rem auto",
+        "width": "65%",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "textAlign": "center",
+        }
+      }
+    >
+      <h2>
+          Find Your Future Home in iHomie 
+      </h2>
+    </div>
+    <div>
+      <div
+        className="ant-row"
+        style={
+          Object {
+            "marginBottom": 8,
+            "marginLeft": -8,
+            "marginRight": -8,
+            "marginTop": -8,
+          }
+        }
+      />
+    </div>
+    <br />
+    <br />
+    <div
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <a
+        className="link"
+        href="#/upload"
+        onClick={[Function]}
+      >
+        Upload New House
+      </a>
+    </div>
+    <div
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <a
+        className="link"
+        href="#/account_update"
+        onClick={[Function]}
+        style={
+          Object {
+            "color": "orange",
+          }
+        }
+      >
+        Update Account Information
+      </a>
+    </div>
+  </div>
+</div>
+`;

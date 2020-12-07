@@ -7,7 +7,7 @@ import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-function NavBar() {
+export function NavBar() {
 	const [loginState, setLoginState] = useState(false); //default as unlogin
 
 	useEffect(() => {
