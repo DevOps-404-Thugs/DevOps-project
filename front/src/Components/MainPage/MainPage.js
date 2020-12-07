@@ -31,10 +31,10 @@ function MainPage() {
       //   console.log(response.data.urls.small);
       //   setPicture(response.data.urls.small)
       // })
-      
+      const picNum = Math.abs(house._id.$oid.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)) % 23;
 
         return <Col lg={6} md={8} xs={24} style={{ border: '#CCC solid 1px', 'border-radius' : '10px', padding:'30px', margin:'30px auto 30px'}}>
-                  <img style={{ width: '100%'}} src={`https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg`} alt={"houseImage"}/>
+                  <img style={{ width: '100%'}} src={process.env.PUBLIC_URL + "/pics/" + picNum + ".jpg"} alt={"houseImage"}/>
                   {/* <img style={{ width: '100%', height:'300px'}} src={picture} alt={"houseImage"}/> */}
                   <p style={{ 'padding-top':'10px', margin : '0', 'font-size' : '24px', 'font-weight' : '700'}}>{house.name}</p>
                   <p style={{ 'padding-top':'10px', 'padding-bottom':'5px', margin : '0'}}>{house.address}</p>

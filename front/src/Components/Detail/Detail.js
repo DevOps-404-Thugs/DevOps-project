@@ -121,6 +121,7 @@ export class Description extends React.Component {
     if (goHomePage) {
       return <Redirect to='/' />
     }
+    const picNum = Math.abs(this.props.objectId.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)) % 23;
     return (
       <>
         <Alert show={showSuccessBar} variant="success" 
@@ -164,7 +165,7 @@ export class Description extends React.Component {
             <Col></Col>
             <Col>
               <Card style={{ width: '50em', margin: '1em' }}>
-                <Card.Img variant="top" src="https://bootstrapmade.com/demo/themes/EstateAgency/assets/img/slide-2.jpg" />
+                <Card.Img variant="top" src={process.env.PUBLIC_URL + "/pics/" + picNum + ".jpg"} />
                 <Card.Body>
                   <Card.Title>{name}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">{address}</Card.Subtitle>
