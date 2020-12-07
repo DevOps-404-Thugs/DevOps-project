@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import MainPage from './MainPage';
 
 
-describe('test', () =>{
+describe('Mainpage component', () =>{
     test("match the snapshot", () =>{
         const component = renderer.create(
             <BrowserRouter>

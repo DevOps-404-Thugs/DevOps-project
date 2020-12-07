@@ -7,6 +7,7 @@ import Detail from './Components/Detail/Detail';
 import Upload from './Components/Upload/Upload';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
+import Account from './Components/Account/Account';
 import AccountUpdate from './Components/AccountUpdate/AccountUpdate';
 
 
@@ -22,6 +23,7 @@ function App() {
           <Route exact path='/upload' component ={Upload}/>
           <Route exact path='/login' component ={Login}/>
           <Route exact path='/register' component ={Register}/>
+          <Route exact path='/account' component ={Account}/>
           <Route exact path='/account_update' component ={AccountUpdate}/>
         </Switch>
       </HashRouter>

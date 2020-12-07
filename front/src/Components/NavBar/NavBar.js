@@ -59,6 +59,7 @@ export function NavBar() {
 			  <Nav.Link href="/ihomie">Home</Nav.Link>
 			  <Nav.Link href="/ihomie#/upload">Upload</Nav.Link>
 			  <Nav.Link href="/ihomie#/register">Register</Nav.Link>
+			  <Nav.Link href="/ihomie#/account">Account</Nav.Link>
 			</Nav>
 			<Form inline>
 			  {loginState == false?
