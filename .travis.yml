@@ -4,6 +4,7 @@ python: "3.7"
 install: 
 - "pip3 install -r requirements.txt" 
 script:
+- "nvm install 10.21.0"
 - "nvm use 10.21.0"
 - "make travis"
 
