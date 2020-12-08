@@ -32,7 +32,7 @@ dev_env: FORCE
 docs: FORCE
 	cd source; make docs
 
-travis: lint unit
+travis: lint unit build_front unit_front
 
 build_front:
 	cd $(FRONT_END); yarn
