@@ -1,11 +1,10 @@
-language: python
+language: python, node_js
 python:
 - "3.7"
+node_js:
+- 10
 install: 
 - "pip3 install -r requirements.txt" 
-- "chmod +x /var/lib/dpkg/lock-frontend" 
-- "apt-get install -y nodejs npm" 
-- "npm install -g yarn"g
 script:
 - "make travis"
 
