@@ -46,7 +46,7 @@ export class Description extends React.Component {
   }
 
   async handleSave(e) {
-    const response = await fetch(`/housings/${this.props.objectId}`, {
+    await fetch(`/housings/${this.props.objectId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -54,11 +54,11 @@ export class Description extends React.Component {
       credentials: 'include',
       body: JSON.stringify(this.state)
     }).then(res => {
-      if (res.status == 405) {
+      if (res.status === 405) {
         this.setState({
           needLogin: true
         })
-      } else if (res.status == 200) {
+      } else if (res.status === 200) {
         this.setState({show: false, showSuccessBar: true});
       } else {
         this.state.prevState.showFailureBar = true;
@@ -69,18 +69,18 @@ export class Description extends React.Component {
   }
 
   async handleDelete(e) {
-    const response = await fetch(`/housings/${this.props.objectId}`, {
+    await fetch(`/housings/${this.props.objectId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       },
       credentials: 'include'
     }).then(res => {
-      if (res.status == 405) {
+      if (res.status === 405) {
         this.setState({
           needLogin: true
         });
-      } else if (res.status == 200) {
+      } else if (res.status === 200) {
         this.setState({
           goHomePage: true
         });
@@ -96,7 +96,8 @@ export class Description extends React.Component {
 
   handleCancel(e) {
     // Restore the previous state
-    this.state.prevState.show = false;
+    this.setState({prevState: { show: false}});
+    //this.state.prevState.show = false;
     this.setState(this.state.prevState);
   }
 
