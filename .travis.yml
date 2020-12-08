@@ -1,12 +1,11 @@
 language: python
-python:
-- "3.7"
+python: "3.7"
+
 install: 
 - "pip3 install -r requirements.txt" 
-- "chmod +x /var/lib/dpkg/lock-frontend" 
-- "apt-get install -y nodejs npm" 
-- "npm install -g yarn"
 script:
+- "nvm install 12.14.1"
+- "nvm use 12.14.1"
 - "make travis"
 
 after_failure:
