@@ -70,9 +70,9 @@ function MainPage() {
                 <Link className="link" to="/upload">Upload New House</Link>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Link className="link" to="/account_update" style={{color:'orange'}}>Update Account Information</Link>
-            </div>
+            </div> */}
 
         </div>
     )
