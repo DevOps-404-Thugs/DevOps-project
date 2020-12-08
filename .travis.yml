@@ -1,11 +1,11 @@
 language: python
 python: "3.7"
-node_js: "10"
-install: "npm install"
 
 install: 
 - "pip3 install -r requirements.txt" 
 script:
+- "nvm install 10.21.0"
+- "nvm use 10.21.0"
 - "make travis"
 
 after_failure:
