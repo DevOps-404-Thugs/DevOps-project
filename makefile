@@ -12,6 +12,7 @@ tests: lint unit unit_front
 
 coverage: FORCE
 	cd source; coverage report endpoints.py Housings.py Users.py api_config.py test.py; rm .coverage
+	cd $(FRONT_END); yarn test --coverage
 
 unit: FORCE
 	cd source; coverage run test.py

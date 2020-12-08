@@ -1,8 +1,11 @@
 language: python
 python:
 - "3.7"
-install: "pip3 install -r requirements.txt"
-script: 
+install: 
+- "pip3 install -r requirements.txt" 
+- "apt-get install -y nodejs npm" 
+- "npm install -g yarn"
+script:
 - "make travis"
 
 after_failure:
