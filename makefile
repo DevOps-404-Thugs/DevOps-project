@@ -24,7 +24,7 @@ unit_front: FORCE
 	cd $(FRONT_END); yarn test
 
 github: FORCE
-	- git commit -am "deploying working environment though CICD"
+	- git commit -a
 	git push origin master
 
 lint: FORCE
@@ -39,4 +39,5 @@ docs: FORCE
 travis: lint unit build_front unit_front
 
 build_front:
+	cd $(FRONT_END); yarn
 	cd $(FRONT_END); yarn build
