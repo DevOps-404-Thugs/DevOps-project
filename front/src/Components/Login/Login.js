@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState} from 'react'
 import Axios from 'axios'
 import { Link } from 'react-router-dom';
 
@@ -23,20 +23,20 @@ function Login() {
 				return alert("Please fill in all fields!")
 			}
 
-			console.log(emailValue)
-			console.log(passwordValue)
+			// console.log(emailValue)
+			// console.log(passwordValue)
 
 			const variables = {
 				email : emailValue,
 				password : passwordValue
 			}
 			
-			console.log(variables)
+			// console.log(variables)
 
 			Axios.post(`/login`, variables, {withCredentials: true})
 					.then(response => {
-						console.log(response.status)
-						console.log(response)
+						// console.log(response.status)
+						// console.log(response)
 						if(response.status === 200){
 							alert("Login successfully!")
 							window.location.replace('/ihomie')//automatically jump to mainpage
@@ -45,7 +45,7 @@ function Login() {
 						}
 					})
 					.catch(function(error){
-						console.log(error.response)
+						// console.log(error.response)
 						if(error.response.status === 401){
 							alert("You need to register for the account!")
 						}else if(error.response.status === 400){
