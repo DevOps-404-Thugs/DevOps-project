@@ -60,6 +60,15 @@ exports[`Description generates correct page 1`] = `
         >
           Register
         </a>
+        <a
+          className="nav-link"
+          data-rb-event-key="/ihomie#/account"
+          href="/ihomie#/account"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          Account
+        </a>
       </div>
       <form
         className="form-inline"
@@ -123,27 +132,6 @@ exports[`Description generates correct page 1`] = `
         onClick={[Function]}
       >
         Upload New House
-      </a>
-    </div>
-    <div
-      style={
-        Object {
-          "display": "flex",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <a
-        className="link"
-        href="#/account_update"
-        onClick={[Function]}
-        style={
-          Object {
-            "color": "orange",
-          }
-        }
-      >
-        Update Account Information
       </a>
     </div>
   </div>

@@ -51,26 +51,5 @@ exports[`Mainpage component match the snapshot 1`] = `
       Upload New House
     </a>
   </div>
-  <div
-    style={
-      Object {
-        "display": "flex",
-        "justifyContent": "center",
-      }
-    }
-  >
-    <a
-      className="link"
-      href="/account_update"
-      onClick={[Function]}
-      style={
-        Object {
-          "color": "orange",
-        }
-      }
-    >
-      Update Account Information
-    </a>
-  </div>
 </div>
 `;
