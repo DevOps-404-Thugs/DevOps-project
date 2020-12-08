@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Account component match the snapshot 1`] = `
+<div
+  style={
+    Object {
+      "margin": "3rem auto",
+      "width": "50%",
+    }
+  }
+>
+  <h2
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "center",
+      }
+    }
+  >
+    You need to login first!
+  </h2>
+  <br />
+  <br />
+  <div
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "center",
+      }
+    }
+  />
+</div>
+`;

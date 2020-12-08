@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountUpdate component match the snapshot 1`] = `
+<div>
+  <div
+    style={
+      Object {
+        "margin": "3rem auto",
+        "width": "75%",
+      }
+    }
+  >
+    <form>
+      <div
+        class="form-group"
+      >
+        <label>
+          User Name
+        </label>
+        <input
+          class="form-control"
+          id="username-input"
+          onChange={[Function]}
+          placeholder="Input new username here"
+          type="text"
+        />
+      </div>
+      <div
+        class="form-group"
+      >
+        <label>
+          Email
+        </label>
+        <input
+          class="form-control"
+          id="email-input"
+          onChange={[Function]}
+          placeholder="Input new email address here"
+          type="text"
+        />
+      </div>
+      <button
+        class="btn btn-primary"
+        onClick={[Function]}
+        type="submit"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
+`;

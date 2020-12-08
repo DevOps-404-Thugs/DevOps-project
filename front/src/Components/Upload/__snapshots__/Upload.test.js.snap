@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Upload component match the snapshot 1`] = `
+<div>
+  <div
+    style={
+      Object {
+        "margin": "3rem auto",
+        "width": "75%",
+      }
+    }
+  >
+    <form>
+      <div
+        class="form-group"
+      >
+        <label>
+          House Name
+        </label>
+        <input
+          class="form-control"
+          id="email-input"
+          onChange={[Function]}
+          placeholder="Input your email address here"
+          type="text"
+        />
+      </div>
+      <div
+        class="form-group"
+      >
+        <label>
+          Address
+        </label>
+        <input
+          class="form-control"
+          id="password-input"
+          onChange={[Function]}
+          placeholder="Input your password here"
+          type="text"
+        />
+      </div>
+      <button
+        class="btn btn-primary"
+        onClick={[Function]}
+        type="submit"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
+`;
