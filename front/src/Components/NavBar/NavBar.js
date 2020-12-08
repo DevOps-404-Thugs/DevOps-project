@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Axios from 'axios'
 import "./NavBar.css"
 import Navbar from 'react-bootstrap/Navbar';
@@ -62,7 +62,7 @@ export function NavBar() {
 			  <Nav.Link href="/ihomie#/account">Account</Nav.Link>
 			</Nav>
 			<Form inline>
-			  {loginState == false?
+			  {loginState === false?
 				  <Button variant="outline-primary" onClick={onLogin}>Login</Button>
 				  :
 				  <Button variant="primary" onClick={onLogout}>Logout</Button>
