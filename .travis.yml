@@ -1,24 +1,32 @@
-language: python
-python: "3.7"
-node_js: "10"
-install: "npm install"
+jobs:
+  include:
+    - stage: install
+      language: python
+      python: "3.7"
+      install: 
+      - "pip3 install -r requirements.txt" 
+    - stage: test
+      script:
+        - "make travis"
 
-install: 
-- "pip3 install -r requirements.txt" 
-script:
-- "make travis"
+      after_failure:
+        - rm source/.coverage
+        - echo "unit test failure"
+        - travis_terminate 1
 
-after_failure:
-  - rm source/.coverage
-  - echo "unit test failure"
-  - travis_terminate 1
+      after_success:
+        - "make coverage"
+    - stage: deploy
+      deploy:
+        provider: heroku
+        api_key: "35ed7263-f3c1-4a3c-ac36-2e0c720b3593"
+        app: dry-river-74760
+        on:
+          branch: master
 
-after_success:
-  - "make coverage"
 
-deploy:
-  provider: heroku
-  api_key: "35ed7263-f3c1-4a3c-ac36-2e0c720b3593"
-  app: dry-river-74760
-  on:
-    branch: master
+
+
+
+
+
