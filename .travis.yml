@@ -1,7 +1,5 @@
-language: python, node_js
 python:
 - "3.7"
-node_js:
 - 10
 install: 
 - "pip3 install -r requirements.txt" 
