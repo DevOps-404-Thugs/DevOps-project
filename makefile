@@ -6,7 +6,10 @@ DOCFILES = $(shell ls *.py | sed -e 's/.py/.html/')
 
 FORCE:
 
-prod: tests coverage github
+coverage_back:
+	cd source; coverage report endpoints.py Housings.py Users.py api_config.py test.py; rm .coverage
+
+prod: lint unit coverage_back unit_front github
 
 tests: lint unit unit_front
 
@@ -21,7 +24,7 @@ unit_front: FORCE
 	cd $(FRONT_END); yarn test
 
 github: FORCE
-	- git commit -a
+	- git commit -am "deploying working environment though CICD"
 	git push origin master
 
 lint: FORCE
