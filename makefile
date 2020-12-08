@@ -8,13 +8,16 @@ FORCE:
 
 prod: tests coverage github
 
-tests: lint unit
+tests: lint unit unit_front
 
 coverage: FORCE
 	cd source; coverage report endpoints.py Housings.py Users.py api_config.py test.py; rm .coverage
 
 unit: FORCE
 	cd source; coverage run test.py
+
+unit_front: FORCE
+	cd $(FRONT_END); yarn test
 
 github: FORCE
 	- git commit -a
